@@ -1,0 +1,26 @@
+{
+  "name": "orders",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/orders/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/libs/backend/orders",
+        "main": "libs/backend/orders/src/index.ts",
+        "tsConfig": "libs/backend/orders/tsconfig.lib.json",
+        "assets": [
+          "libs/backend/orders/*.md"
+        ]
+      }
+    }
+  },
+  "tags": [
+    "scope:backend",
+    "type:feature"
+  ]
+}

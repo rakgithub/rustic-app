@@ -1,3 +1,9 @@
 allowBuilds:
+  '@parcel/watcher': true
+  cpu-features: true
+  esbuild: true
   msw: true
   nx: true
+  protobufjs: true
+  ssh2: true
+  unrs-resolver: true

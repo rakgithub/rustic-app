@@ -47,6 +47,21 @@
       ],
       "feature-checkout": [
         "./libs/commerce/feature-checkout/src/index.ts"
+      ],
+      "database": [
+        "./libs/backend/database/src/index.ts"
+      ],
+      "auth": [
+        "./libs/backend/auth/src/index.ts"
+      ],
+      "catalog": [
+        "./libs/backend/catalog/src/index.ts"
+      ],
+      "orders": [
+        "./libs/backend/orders/src/index.ts"
+      ],
+      "wallet": [
+        "./libs/backend/wallet/src/index.ts"
       ]
     }
   },

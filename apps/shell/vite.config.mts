@@ -18,8 +18,12 @@ export default defineConfig({
       // No build-time `remotes:` block - the consumer registers them at
       // runtime in src/mf.ts at module load time.
       shared: {
-        react: { singleton: true },
-        'react-dom': { singleton: true },
+        react: { singleton: true, requiredVersion: '^19.0.0' },
+        'react-dom': { singleton: true, requiredVersion: '^19.0.0' },
+        'react-router-dom': {
+          singleton: true,
+          requiredVersion: '^7.18.3',
+        },
       },
     }),
     react(),

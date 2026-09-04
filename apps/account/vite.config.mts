@@ -28,8 +28,12 @@ export default defineConfig({
         './App': './src/App.tsx',
       },
       shared: {
-        react: { singleton: true },
-        'react-dom': { singleton: true },
+        react: { singleton: true, requiredVersion: '^19.0.0' },
+        'react-dom': { singleton: true, requiredVersion: '^19.0.0' },
+        'react-router-dom': {
+          singleton: true,
+          requiredVersion: '^7.18.3',
+        },
       },
     }),
     react(),

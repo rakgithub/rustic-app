@@ -1,0 +1,26 @@
+{
+  "name": "wallet",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/wallet/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/libs/backend/wallet",
+        "main": "libs/backend/wallet/src/index.ts",
+        "tsConfig": "libs/backend/wallet/tsconfig.lib.json",
+        "assets": [
+          "libs/backend/wallet/*.md"
+        ]
+      }
+    }
+  },
+  "tags": [
+    "scope:backend",
+    "type:feature"
+  ]
+}

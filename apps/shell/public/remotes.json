@@ -1,0 +1,10 @@
+{
+  "account": {
+    "name": "account",
+    "entry": "http://localhost:5101/remoteEntry.js"
+  },
+  "commerce": {
+    "name": "commerce",
+    "entry": "http://localhost:5102/remoteEntry.js"
+  }
+}
