@@ -1,0 +1,60 @@
+{
+  "name": "vinted-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.24.0",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@11.24.0",
+  "type": "module",
+  "devDependencies": {
+    "@babel/core": "^7.14.5",
+    "@babel/preset-react": "^7.14.5",
+    "@module-federation/vite": "^1.15.5",
+    "@nx/js": "23.2.0",
+    "@nx/oxlint": "23.2.0",
+    "@nx/react": "23.2.0",
+    "@nx/vite": "23.2.0",
+    "@nx/vitest": "23.2.0",
+    "@nx/workspace": "23.2.0",
+    "@swc/helpers": "~0.5.18",
+    "@testing-library/dom": "10.4.0",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.0.2",
+    "@vitest/coverage-v8": "~4.1.0",
+    "@vitest/ui": "~4.1.0",
+    "jsdom": "^27.1.0",
+    "msw": "^2.15.0",
+    "nx": "23.2.0",
+    "oxlint": "^1.75.0",
+    "tslib": "^2.3.0",
+    "typescript": "~6.0.3",
+    "vite": "^8.0.13",
+    "vitest": "~4.1.0"
+  },
+  "nx": {},
+  "dependencies": {
+    "@module-federation/runtime": "^2.4.0",
+    "@tanstack/react-query": "^5.102.8",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.87.0",
+    "react-router-dom": "^7.18.3",
+    "zod": "^4.5.4"
+  }
+}

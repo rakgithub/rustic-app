@@ -1,0 +1,12 @@
+{
+  "name": "feature-selling",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/commerce/feature-selling/src",
+  "projectType": "library",
+  "tags": [
+    "scope:commerce",
+    "type:feature"
+  ],
+  "// targets": "to see all targets run: nx show project feature-selling --web",
+  "targets": {}
+}

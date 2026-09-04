@@ -1,0 +1,52 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "typescript",
+    "unicorn",
+    "oxc"
+  ],
+  "jsPlugins": [
+    "@nx/oxlint/boundaries-plugin"
+  ],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "@nx/enforce-module-boundaries": [
+      "error",
+      {
+        "enforceBuildableLibDependency": true,
+        "allow": [],
+        "depConstraints": [
+          {
+            "sourceTag": "scope:account",
+            "onlyDependOnLibsWithTags": ["scope:account", "scope:shared"]
+          },
+          {
+            "sourceTag": "scope:commerce",
+            "onlyDependOnLibsWithTags": ["scope:commerce", "scope:shared"]
+          },
+          {
+            "sourceTag": "scope:shell",
+            "onlyDependOnLibsWithTags": ["scope:shell", "scope:shared"]
+          },
+          {
+            "sourceTag": "scope:shared",
+            "onlyDependOnLibsWithTags": ["scope:shared"]
+          },
+          {
+            "sourceTag": "type:ui",
+            "onlyDependOnLibsWithTags": ["type:ui", "type:util", "type:contract"]
+          },
+          {
+            "sourceTag": "type:data-access",
+            "onlyDependOnLibsWithTags": ["type:data-access", "type:util", "type:contract"]
+          }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "builtin": true
+  }
+}
