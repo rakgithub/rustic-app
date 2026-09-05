@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "ignoreCommand": "affected=\"$(NX_DAEMON=false pnpm exec nx show projects --affected --base=HEAD^ --head=HEAD --projects=account --json)\" && test \"$affected\" = \"[]\"",
   "headers": [
     {
       "source": "/remoteEntry.js",
