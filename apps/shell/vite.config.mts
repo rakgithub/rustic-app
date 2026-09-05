@@ -9,6 +9,13 @@ export default defineConfig({
     port: PORT,
     strictPort: true,
     host: '127.0.0.1',
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:3333',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
   },
   preview: { port: PORT, strictPort: true },
   build: { target: 'chrome89' },

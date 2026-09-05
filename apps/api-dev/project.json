@@ -14,7 +14,7 @@
         "platform": "node",
         "outputPath": "dist/apps/api-dev",
         "format": [
-          "cjs"
+          "esm"
         ],
         "bundle": false,
         "main": "apps/api-dev/src/main.ts",

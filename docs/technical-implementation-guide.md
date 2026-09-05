@@ -398,16 +398,107 @@ pnpm add --save-dev drizzle-kit testcontainers openapi-typescript openapi-fetch
 
 ### Local database
 
-Add a `compose.yaml` containing PostgreSQL, then run:
+The application only requires access to PostgreSQL; Docker is optional. Choose
+one of the following development setups:
+
+#### Option A — Docker Compose
+
+Use this when the team wants a reproducible PostgreSQL version and configuration
+without installing PostgreSQL directly. Install Docker Desktop, add a
+`compose.yaml` containing PostgreSQL, then run:
 
 ```bash
 docker compose up -d postgres
 docker compose ps
 ```
 
+#### Option B — Native PostgreSQL on macOS
+
+For a lighter local setup, use Postgres.app or install PostgreSQL with Homebrew:
+
+```bash
+brew install postgresql@17
+brew services start postgresql@17
+createdb marketplace_dev
+createdb marketplace_test
+```
+
+Postgres.app provides the same local PostgreSQL server through a macOS
+application and does not require Docker Desktop.
+
+#### Option C — Hosted PostgreSQL
+
+Use a development database from a provider such as Neon, Supabase, Railway, or
+Render and place its SSL connection URL in `DATABASE_URL`. This avoids running
+PostgreSQL locally but requires network access and may make integration tests
+slower.
+
+##### Supabase setup
+
+1. Create a project at [Supabase](https://supabase.com/dashboard). Choose a
+   region close to the Vercel deployment region and save the generated database
+   password in a password manager.
+2. In the project dashboard, select **Connect** and copy:
+   - **Transaction pooler** URI for application traffic from Vercel functions.
+   - **Direct connection** URI for Drizzle migrations. If the machine or CI
+     runner cannot reach the IPv6 direct endpoint, use the session pooler URI
+     for migrations instead.
+3. Replace `[YOUR-PASSWORD]` in each copied URI. URL-encode special characters
+   in the password.
+4. Create a separate Supabase project for production. Use another project or an
+   isolated database/schema for development and tests.
+
+Use these server-side environment variables:
+
+```text
+# Runtime queries from Hono on Vercel: transaction pooler, normally port 6543
+DATABASE_URL=postgresql://postgres.<project-ref>:<password>@<region>.pooler.supabase.com:6543/postgres
+
+# Drizzle migrations: direct connection, normally port 5432
+DIRECT_DATABASE_URL=postgresql://postgres:<password>@db.<project-ref>.supabase.co:5432/postgres
+
+# Dedicated test project/database; never use the production URL
+TEST_DATABASE_URL=postgresql://postgres.<test-project-ref>:<password>@<region>.pooler.supabase.com:6543/postgres
+
+SESSION_SECRET=<at-least-32-random-bytes>
+```
+
+Supabase transaction pooling does not support prepared statements. Configure
+the `postgres` driver used by the Vercel runtime accordingly:
+
+```ts
+const client = postgres(process.env.DATABASE_URL!, {
+  max: 1,
+  prepare: false,
+});
+```
+
+Add the same variable names in **Vercel → Project → Settings → Environment
+Variables**, using different values for Development, Preview, and Production.
+Never prefix database URLs or `SESSION_SECRET` with `VITE_`; Vite-prefixed
+variables are exposed to browser code.
+
+The current Hono + Drizzle design connects directly to PostgreSQL, so it does
+not require a Supabase publishable key or secret key. If Supabase Auth, Storage,
+Realtime, or the Data API is introduced later, add:
+
+```text
+# Safe for browser use only with appropriate Row Level Security policies
+VITE_SUPABASE_URL=https://<project-ref>.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=<publishable-key>
+
+# Backend only; never expose through VITE_ or commit to source control
+SUPABASE_SECRET_KEY=<secret-key>
+```
+
+The older `anon` and `service_role` names may still appear in existing
+Supabase projects. Treat `anon` like the publishable key and
+`service_role` like the secret key. Secret and service-role keys bypass Row
+Level Security and must remain server-side.
+
 Use separate databases or schemas for development and tests. Never run tests against the development or production database.
 
-Example local environment names:
+Example environment variables for a local PostgreSQL installation:
 
 ```text
 DATABASE_URL=postgres://app:app@localhost:5432/marketplace_dev
@@ -416,6 +507,11 @@ SESSION_SECRET=<at-least-32-random-bytes>
 ```
 
 Do not commit their values. Commit an `.env.example` containing names and descriptions only.
+
+`testcontainers` requires a Docker-compatible container runtime. When using
+native or hosted PostgreSQL without Docker, run integration tests against a
+separately provisioned `TEST_DATABASE_URL` instead, and ensure each test run
+resets or isolates its schema.
 
 ### Create and run migrations
 
