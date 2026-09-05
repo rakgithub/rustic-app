@@ -3,11 +3,16 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/shell/src",
   "projectType": "application",
-  "tags": [
-    "scope:shell", 
-    "type:app"
-  ],
+  "tags": ["scope:shell", "type:app"],
   "targets": {
+    "generate-remotes": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "node ../../tools/scripts/generate-remotes.mjs",
+        "cwd": "apps/shell"
+      }
+    },
     "serve": {
       "executor": "nx:run-commands",
       "continuous": true,
@@ -18,6 +23,7 @@
     },
     "build": {
       "executor": "nx:run-commands",
+      "dependsOn": ["generate-remotes"],
       "options": {
         "command": "vite build",
         "cwd": "apps/shell"

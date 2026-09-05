@@ -1,0 +1,5 @@
+{
+  "shellBootstrapGzipBytes": 30000,
+  "accountJavaScriptGzipBytes": 300000,
+  "commerceJavaScriptGzipBytes": 350000
+}
