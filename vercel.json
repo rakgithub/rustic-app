@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "relatedProjects": ["<ACCOUNT_VERCEL_PROJECT_ID>", "<COMMERCE_VERCEL_PROJECT_ID>"],
+  "relatedProjects": ["ACCOUNT_REMOTE_URL", "COMMERCE_REMOTE_URL"],
   "headers": [
     {
       "source": "/(.*)",

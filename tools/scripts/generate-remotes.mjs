@@ -29,7 +29,11 @@ function providerHost(projectName, fallbackEnvName, localFallback) {
   // Related Projects supplies a same-branch preview alias. Production deliberately
   // uses the explicit stable alias configured in Vercel environment variables.
   if (process.env.VERCEL_ENV === "preview") {
-    return withRelatedProject({ projectName, defaultHost: fallback });
+    const relatedHost = withRelatedProject({
+      projectName,
+      defaultHost: fallback,
+    });
+    if (relatedHost) return relatedHost;
   }
 
   if (fallback) return fallback;
