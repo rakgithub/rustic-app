@@ -1,0 +1,42 @@
+name: Preview E2E
+
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      preview_url:
+        description: Composed shell preview URL
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  preview-e2e:
+    name: preview-e2e
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' && github.event.deployment_status.environment != 'production')
+    runs-on: ubuntu-latest
+    env:
+      BASE_URL: ${{ inputs.preview_url || github.event.deployment_status.target_url }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Wait for preview readiness
+        run: |
+          for attempt in $(seq 1 30); do
+            curl --fail --silent --show-error "$BASE_URL" && exit 0
+            sleep 10
+          done
+          exit 1
+      - run: pnpm exec nx e2e shell

@@ -1,0 +1,28 @@
+name: Nightly browsers
+
+on:
+  schedule:
+    - cron: "31 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-resilience:
+    name: browser resilience
+    runs-on: ubuntu-latest
+    env:
+      PLAYWRIGHT_ALL_BROWSERS: "true"
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit
+      - run: pnpm exec nx e2e shell

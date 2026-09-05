@@ -1,7 +1,8 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
 // For CI, you may want to set BASE_URL to the deployed application.
-const baseURL = process.env['BASE_URL'] || 'http://127.0.0.1:5100';
+const baseURL = process.env["BASE_URL"] || "http://127.0.0.1:5100";
+const runAllBrowsers = process.env["PLAYWRIGHT_ALL_BROWSERS"] === "true";
 
 /**
  * Read environment variables from file.
@@ -20,24 +21,47 @@ const baseURL = process.env['BASE_URL'] || 'http://127.0.0.1:5100';
  * (.ts/.js/.mts/.mjs/.cts/.cjs).
  */
 export default defineConfig({
-  testDir: './e2e',
-  outputDir: '../../dist/.playwright/apps/shell/test-output',
+  testDir: "./e2e",
+  outputDir: "../../dist/.playwright/apps/shell/test-output",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: "on-first-retry",
   },
   /* Run your local dev server before starting the tests */
-  webServer: [
-    { command: 'pnpm --dir apps/account run dev', url: 'http://127.0.0.1:5101', reuseExistingServer: false, cwd: '../..' },
-    { command: 'pnpm --dir apps/commerce run dev', url: 'http://127.0.0.1:5102', reuseExistingServer: false, cwd: '../..' },
-    { command: 'pnpm --dir apps/shell run dev', url: 'http://127.0.0.1:5100', reuseExistingServer: false, cwd: '../..' },
-  ],
+  webServer: process.env["BASE_URL"]
+    ? undefined
+    : [
+        {
+          command: "pnpm --dir apps/account run dev",
+          url: "http://127.0.0.1:5101",
+          reuseExistingServer: false,
+          cwd: "../..",
+        },
+        {
+          command: "pnpm --dir apps/commerce run dev",
+          url: "http://127.0.0.1:5102",
+          reuseExistingServer: false,
+          cwd: "../..",
+        },
+        {
+          command: "pnpm --dir apps/shell run dev",
+          url: "http://127.0.0.1:5100",
+          reuseExistingServer: false,
+          cwd: "../..",
+        },
+      ],
   projects: [
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
+    ...(runAllBrowsers
+      ? [
+          { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+          { name: "webkit", use: { ...devices["Desktop Safari"] } },
+        ]
+      : []),
   ],
 });

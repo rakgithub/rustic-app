@@ -10,63 +10,27 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "strict": false,
     "paths": {
-      "ui": [
-        "./libs/shared/ui/src/index.ts"
-      ],
-      "contracts": [
-        "./libs/shared/contracts/src/index.ts"
-      ],
-      "api-client": [
-        "./libs/shared/api-client/src/index.ts"
-      ],
-      "config": [
-        "./libs/shared/config/src/index.ts"
-      ],
-      "observability": [
-        "./libs/shared/observability/src/index.ts"
-      ],
-      "feature-auth": [
-        "./libs/account/feature-auth/src/index.ts"
-      ],
-      "data-access": [
-        "./libs/account/data-access/src/index.ts"
-      ],
-      "feature-catalog": [
-        "./libs/commerce/feature-catalog/src/index.ts"
-      ],
-      "feature-selling": [
-        "./libs/commerce/feature-selling/src/index.ts"
-      ],
-      "feature-checkout": [
-        "./libs/commerce/feature-checkout/src/index.ts"
-      ],
-      "database": [
-        "./libs/backend/database/src/index.ts"
-      ],
-      "auth": [
-        "./libs/backend/auth/src/index.ts"
-      ],
-      "catalog": [
-        "./libs/backend/catalog/src/index.ts"
-      ],
-      "orders": [
-        "./libs/backend/orders/src/index.ts"
-      ],
-      "wallet": [
-        "./libs/backend/wallet/src/index.ts"
-      ]
+      "ui": ["./libs/shared/ui/src/index.ts"],
+      "contracts": ["./libs/shared/contracts/src/index.ts"],
+      "api-client": ["./libs/shared/api-client/src/index.ts"],
+      "config": ["./libs/shared/config/src/index.ts"],
+      "observability": ["./libs/shared/observability/src/index.ts"],
+      "feature-auth": ["./libs/account/feature-auth/src/index.ts"],
+      "data-access": ["./libs/account/data-access/src/index.ts"],
+      "feature-catalog": ["./libs/commerce/feature-catalog/src/index.ts"],
+      "feature-selling": ["./libs/commerce/feature-selling/src/index.ts"],
+      "feature-checkout": ["./libs/commerce/feature-checkout/src/index.ts"],
+      "database": ["./libs/backend/database/src/index.ts"],
+      "auth": ["./libs/backend/auth/src/index.ts"],
+      "catalog": ["./libs/backend/catalog/src/index.ts"],
+      "orders": ["./libs/backend/orders/src/index.ts"],
+      "wallet": ["./libs/backend/wallet/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }
