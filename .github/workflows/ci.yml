@@ -22,7 +22,7 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec nx format:check
+      - run: pnpm exec nx format:check --base=origin/${{ github.event.repository.default_branch }} --head=HEAD
       - run: pnpm exec nx affected -t lint --parallel=3 --base=origin/${{ github.event.repository.default_branch }} --head=HEAD
 
   typecheck:
