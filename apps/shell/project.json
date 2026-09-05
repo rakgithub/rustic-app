@@ -22,6 +22,12 @@
         "command": "vite build",
         "cwd": "apps/shell"
       }
+    },
+    "federation-smoke": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/federation-smoke.mjs"
+      }
     }
   }
 }

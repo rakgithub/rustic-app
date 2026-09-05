@@ -35,6 +35,10 @@
             "onlyDependOnLibsWithTags": ["scope:shared"]
           },
           {
+            "sourceTag": "scope:backend",
+            "onlyDependOnLibsWithTags": ["scope:backend", "scope:shared"]
+          },
+          {
             "sourceTag": "type:ui",
             "onlyDependOnLibsWithTags": ["type:ui", "type:util", "type:contract"]
           },

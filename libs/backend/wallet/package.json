@@ -6,6 +6,8 @@
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
   "dependencies": {
+    "database": "workspace:*",
+    "drizzle-orm": "^0.45.2",
     "tslib": "^2.3.0"
   }
 }

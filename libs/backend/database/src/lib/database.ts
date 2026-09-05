@@ -3,10 +3,11 @@ import {
   type PostgresJsDatabase,
 } from 'drizzle-orm/postgres-js';
 import postgres, { type Sql } from 'postgres';
+import * as schema from '../schema';
 
 export type DatabaseConnection = {
   client: Sql;
-  db: PostgresJsDatabase;
+  db: PostgresJsDatabase<typeof schema>;
   close: () => Promise<void>;
 };
 
@@ -46,7 +47,7 @@ export function createDatabase(
 
   return {
     client,
-    db: drizzle(client),
+    db: drizzle(client, { schema }),
     close: () => client.end(),
   };
 }
