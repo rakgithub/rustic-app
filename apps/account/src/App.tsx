@@ -3,7 +3,7 @@
 export function App() {
   return (
     <section data-testid="account">
-      <h1>Hello from account</h1>
+      <h1>Hello, Welcome to rustic-app</h1>
     </section>
   );
 }
