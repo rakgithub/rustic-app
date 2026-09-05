@@ -868,11 +868,11 @@ Use Vercel Git integration for composed previews. Related Projects does not supp
 
 Import the same Git repository three times in Vercel:
 
-| Project | Root directory | Build command | Output directory |
-|---|---|---|---|
-| `market-shell` | repository root | `pnpm exec nx build shell` | inspect `nx show project shell` |
-| `market-account` | `apps/account` | package build script | `dist` |
-| `market-commerce` | `apps/commerce` | package build script | `dist` |
+| Project           | Root directory  | Build command              | Output directory  |
+| ----------------- | --------------- | -------------------------- | ----------------- |
+| `market-shell`    | repository root | `pnpm exec nx build shell` | `apps/shell/dist` |
+| `market-account`  | `apps/account`  | package build script       | `dist`            |
+| `market-commerce` | `apps/commerce` | package build script       | `dist`            |
 
 Do not guess output paths. Confirm them after a local production build:
 
@@ -889,14 +889,12 @@ The shell project stays rooted at the repository root so Vercel can detect the r
 
 ### Connect related providers
 
-Add both provider project IDs to the shell project's `vercel.json`:
+Add both provider project IDs to the **repository-root** `vercel.json` (the
+shell project's root directory):
 
 ```json
 {
-  "relatedProjects": [
-    "<ACCOUNT_VERCEL_PROJECT_ID>",
-    "<COMMERCE_VERCEL_PROJECT_ID>"
-  ]
+  "relatedProjects": ["<ACCOUNT_VERCEL_PROJECT_ID>", "<COMMERCE_VERCEL_PROJECT_ID>"]
 }
 ```
 
@@ -906,14 +904,19 @@ Add `@vercel/related-projects` to generate the shell's preview remote map:
 pnpm add @vercel/related-projects
 ```
 
-Create `tools/scripts/generate-remotes.mjs`. It should use related preview hosts when available and fall back to explicit production variables:
+`tools/scripts/generate-remotes.mjs` generates `apps/shell/public/remotes.json`
+before every `nx build shell`. It uses matching related-project preview hosts
+when available. In Production it uses explicit, stable provider aliases:
 
 ```text
 ACCOUNT_REMOTE_URL
 COMMERCE_REMOTE_URL
 ```
 
-Add remote CORS headers for `remoteEntry.js` and generated chunks. Remote assets do not receive credentials; API calls execute from the shell page and use relative same-origin `/api` requests.
+Provider `vercel.json` files set CORS and cache headers for `remoteEntry.js`,
+`mf-manifest.json`, and hashed assets. Remote assets do not receive
+credentials; API calls execute from the shell page and use relative same-origin
+`/api` requests.
 
 ### Add environment variables
 
@@ -925,7 +928,12 @@ pnpm exec vercel env add COMMERCE_REMOTE_URL production
 pnpm exec vercel env pull .env.local
 ```
 
-Repeat sensitive values for Preview using preview-specific resources. Never connect arbitrary pull requests to the production database.
+In Vercel, add `ACCOUNT_REMOTE_URL` and `COMMERCE_REMOTE_URL` to both
+Production and Preview. Use stable production provider aliases for Production;
+Preview values are fallbacks if a matching related deployment is unavailable.
+Add `DATABASE_URL` and `SESSION_SECRET` only to the shell/API project, and use
+preview-specific database credentials. Never connect arbitrary pull requests to
+the production database.
 
 ### Cache rules
 
@@ -981,6 +989,10 @@ pnpm exec nx build commerce
 
 Record gzip sizes for the shell bootstrap and each provider. Fail CI when a change exceeds the agreed budget without an approved explanation.
 
+`tools/bundle-budgets.json` stores the enforced gzip budgets. CI builds the
+shell and both providers, then runs `pnpm run bundle:check`; changing a budget
+is a reviewable, explicit acknowledgement of a size increase.
+
 ### Operational runbooks
 
 Create and rehearse:
@@ -994,6 +1006,9 @@ docs/runbooks/blob-upload-abuse.md
 docs/runbooks/vercel-rollback.md
 docs/runbooks/database-restore.md
 ```
+
+Each runbook records the safe first response, evidence to preserve, recovery
+steps, and verification. Rehearse them in a non-production environment.
 
 ### Release rehearsal
 
@@ -1010,6 +1025,18 @@ docs/runbooks/database-restore.md
 - Security headers and the remote-origin CSP allowlist are verified.
 - WCAG 2.2 AA checks cover every critical flow.
 - Database backup restoration and deployment rollback have been rehearsed.
+
+### Dashboard configuration still required
+
+Enable GitHub Dependency Review, CodeQL, secret scanning, protected
+environments, and the `main branch protection` ruleset in GitHub. The
+repository includes Dependabot configuration, security workflows, bundle
+budgets, runbooks, and Vercel security headers; dashboard controls require
+repository-owner access and cannot be committed to Git.
+
+Add the new `performance` and `production audit` checks to the `main` ruleset
+once the initial baseline is accepted, so the readiness gates cannot be
+bypassed by merging a pull request.
 
 ## Daily development commands
 
@@ -1056,203 +1083,203 @@ This reference explains executable commands from the guide. Repeated commands ha
 
 ### Command syntax used throughout
 
-| Syntax | What it does | Why it helps |
-|---|---|---|
-| `pnpm exec <command>` | Runs a binary installed in this repository's dependencies. | Every developer and CI job uses the same tool version instead of an unknown global installation. |
-| `nx g <plugin>:<generator>` | Runs an Nx code generator. `g` is short for `generate`. | Creates projects and configuration consistently and registers them in the Nx project graph. |
-| `nx add <plugin>` | Installs an Nx plugin and runs its initialization generator. | A plugin is installed and configured together rather than leaving partial manual configuration. |
-| `nx run <project>:<target>` | Runs one named target for one project. | Provides an explicit form that works for custom targets such as `federation-smoke`. |
-| `nx <target> <project>` | Shorthand for running a standard project target. | Makes common local commands such as `nx test account` easier to read. |
-| `nx run-many -t <targets>` | Runs one or more targets across several projects. | Nx respects dependencies, parallelizes safe work, and uses its cache. |
-| `nx affected -t <targets>` | Runs targets only for projects changed relative to a Git base plus their dependants. | Keeps pull-request CI fast as the monorepo grows. |
+| Syntax                      | What it does                                                                         | Why it helps                                                                                     |
+| --------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `pnpm exec <command>`       | Runs a binary installed in this repository's dependencies.                           | Every developer and CI job uses the same tool version instead of an unknown global installation. |
+| `nx g <plugin>:<generator>` | Runs an Nx code generator. `g` is short for `generate`.                              | Creates projects and configuration consistently and registers them in the Nx project graph.      |
+| `nx add <plugin>`           | Installs an Nx plugin and runs its initialization generator.                         | A plugin is installed and configured together rather than leaving partial manual configuration.  |
+| `nx run <project>:<target>` | Runs one named target for one project.                                               | Provides an explicit form that works for custom targets such as `federation-smoke`.              |
+| `nx <target> <project>`     | Shorthand for running a standard project target.                                     | Makes common local commands such as `nx test account` easier to read.                            |
+| `nx run-many -t <targets>`  | Runs one or more targets across several projects.                                    | Nx respects dependencies, parallelizes safe work, and uses its cache.                            |
+| `nx affected -t <targets>`  | Runs targets only for projects changed relative to a Git base plus their dependants. | Keeps pull-request CI fast as the monorepo grows.                                                |
 
 ### Discovery and prerequisite commands
 
-| Command | Why we use it | How it helps |
-|---|---|---|
-| `pnpm exec nx g @nx/react:consumer --help` | Displays the installed consumer-generator options. | Prevents copying flags from an older Nx release. |
-| `pnpm exec nx g @nx/react:provider --help` | Displays the installed provider-generator options. | Confirms the current federation and bundler options before modifying the workspace. |
-| `node --version` | Shows the active Node.js runtime. | Detects a runtime mismatch before installation or build failures occur. |
-| `pnpm --version` | Shows the active package-manager version. | Confirms that local development matches the version pinned in `packageManager`. |
-| `git --version` | Confirms Git is installed. | Nx affected calculations and the CI workflow rely on Git history. |
-| `docker --version` | Confirms Docker is available. | Local PostgreSQL and database integration tests require a reproducible container runtime. |
-| `mkdir -p docs/adr docs/runbooks` | Creates documentation directories and does nothing if they already exist. | Gives architectural decisions and operational procedures stable, discoverable locations. |
-| `touch docs/adr/<file>.md` | Creates an empty ADR file if it does not exist. | Establishes one reviewable record per important architectural decision. |
+| Command                                    | Why we use it                                                             | How it helps                                                                              |
+| ------------------------------------------ | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `pnpm exec nx g @nx/react:consumer --help` | Displays the installed consumer-generator options.                        | Prevents copying flags from an older Nx release.                                          |
+| `pnpm exec nx g @nx/react:provider --help` | Displays the installed provider-generator options.                        | Confirms the current federation and bundler options before modifying the workspace.       |
+| `node --version`                           | Shows the active Node.js runtime.                                         | Detects a runtime mismatch before installation or build failures occur.                   |
+| `pnpm --version`                           | Shows the active package-manager version.                                 | Confirms that local development matches the version pinned in `packageManager`.           |
+| `git --version`                            | Confirms Git is installed.                                                | Nx affected calculations and the CI workflow rely on Git history.                         |
+| `docker --version`                         | Confirms Docker is available.                                             | Local PostgreSQL and database integration tests require a reproducible container runtime. |
+| `mkdir -p docs/adr docs/runbooks`          | Creates documentation directories and does nothing if they already exist. | Gives architectural decisions and operational procedures stable, discoverable locations.  |
+| `touch docs/adr/<file>.md`                 | Creates an empty ADR file if it does not exist.                           | Establishes one reviewable record per important architectural decision.                   |
 
 The five `touch` commands create separate records for federation, domain boundaries, authentication, the wallet ledger, and deployment. They use the same shell operation but intentionally represent independent decisions.
 
 ### Workspace initialization commands
 
-| Command | Why we use it | How it helps |
-|---|---|---|
-| `pnpm init` | Creates the root `package.json`. | Gives pnpm and Nx a JavaScript workspace manifest without replacing the existing documentation directory. |
-| `pnpm add --save-dev nx@23.2.0 @nx/workspace@23.2.0` | Installs the Nx CLI and workspace plugin as development dependencies. | Pins the build system locally and makes the workspace reproducible. `--save-dev` keeps build tooling out of runtime dependencies. |
-| `pnpm exec nx init` | Creates/updates `nx.json` and initializes Nx task discovery and caching. | Converts the repository into an Nx-managed workspace. |
-| `pnpm exec nx add @nx/react@23.2.0` | Installs and initializes Nx's React plugin. | Makes React application, library, consumer, and provider generators available. Keep its version aligned with `nx`. |
-| `pnpm exec nx g @nx/react:consumer apps/shell --bundler=vite --providerNames=account,commerce` | Generates the shell consumer and two provider applications using Vite. | Creates the federation skeleton, remote entries, standalone provider apps, and Nx tasks in one consistent operation. |
-| `pnpm add react-router-dom @tanstack/react-query react-hook-form zod` | Installs browser runtime dependencies. | Provides routing, server-state handling, forms, and runtime validation used by shipped application code. |
-| `pnpm add --save-dev @testing-library/react @testing-library/user-event msw` | Installs component and API-mocking test tools. | Enables user-focused tests without increasing production bundles. |
-| `pnpm exec nx serve shell` | Starts the shell development server. | Exercises the application frame and composed routing with fast refresh. |
-| `pnpm exec nx serve account` | Starts the account provider in development mode. | Allows account development and verifies its standalone/provider contract. |
-| `pnpm exec nx serve commerce` | Starts the commerce provider in development mode. | Allows commerce development and verifies its standalone/provider contract. |
-| `pnpm exec nx show projects` | Lists projects known to Nx. | Confirms generated names before those names are used in test and CI commands. |
-| `pnpm exec nx graph` | Opens or generates the Nx dependency graph. | Makes unintended cross-domain dependencies visible. |
-| `pnpm exec nx run-many -t build --projects=shell,account,commerce` | Builds all three frontend deployables. | Proves the generated federation topology works in production mode, not only in dev servers. |
+| Command                                                                                        | Why we use it                                                            | How it helps                                                                                                                      |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm init`                                                                                    | Creates the root `package.json`.                                         | Gives pnpm and Nx a JavaScript workspace manifest without replacing the existing documentation directory.                         |
+| `pnpm add --save-dev nx@23.2.0 @nx/workspace@23.2.0`                                           | Installs the Nx CLI and workspace plugin as development dependencies.    | Pins the build system locally and makes the workspace reproducible. `--save-dev` keeps build tooling out of runtime dependencies. |
+| `pnpm exec nx init`                                                                            | Creates/updates `nx.json` and initializes Nx task discovery and caching. | Converts the repository into an Nx-managed workspace.                                                                             |
+| `pnpm exec nx add @nx/react@23.2.0`                                                            | Installs and initializes Nx's React plugin.                              | Makes React application, library, consumer, and provider generators available. Keep its version aligned with `nx`.                |
+| `pnpm exec nx g @nx/react:consumer apps/shell --bundler=vite --providerNames=account,commerce` | Generates the shell consumer and two provider applications using Vite.   | Creates the federation skeleton, remote entries, standalone provider apps, and Nx tasks in one consistent operation.              |
+| `pnpm add react-router-dom @tanstack/react-query react-hook-form zod`                          | Installs browser runtime dependencies.                                   | Provides routing, server-state handling, forms, and runtime validation used by shipped application code.                          |
+| `pnpm add --save-dev @testing-library/react @testing-library/user-event msw`                   | Installs component and API-mocking test tools.                           | Enables user-focused tests without increasing production bundles.                                                                 |
+| `pnpm exec nx serve shell`                                                                     | Starts the shell development server.                                     | Exercises the application frame and composed routing with fast refresh.                                                           |
+| `pnpm exec nx serve account`                                                                   | Starts the account provider in development mode.                         | Allows account development and verifies its standalone/provider contract.                                                         |
+| `pnpm exec nx serve commerce`                                                                  | Starts the commerce provider in development mode.                        | Allows commerce development and verifies its standalone/provider contract.                                                        |
+| `pnpm exec nx show projects`                                                                   | Lists projects known to Nx.                                              | Confirms generated names before those names are used in test and CI commands.                                                     |
+| `pnpm exec nx graph`                                                                           | Opens or generates the Nx dependency graph.                              | Makes unintended cross-domain dependencies visible.                                                                               |
+| `pnpm exec nx run-many -t build --projects=shell,account,commerce`                             | Builds all three frontend deployables.                                   | Proves the generated federation topology works in production mode, not only in dev servers.                                       |
 
 ### Library-generation commands
 
 All library generators create an Nx project, TypeScript configuration, a public entry point, and optional test configuration. These shared options mean:
 
-| Option | Meaning | Benefit |
-|---|---|---|
-| `@nx/react:library` | Creates a library allowed to contain React components and hooks. | Keeps view code in a properly configured React compilation boundary. |
-| `@nx/js:library` | Creates a framework-independent TypeScript/JavaScript library. | Prevents contracts, API code, or utilities from depending on React accidentally. |
-| `--bundler=none` | Does not create a separately published package bundle. | The consuming app bundles the source, avoiding unnecessary library build/publish complexity. |
-| `--unitTestRunner=vitest` | Adds a Vitest test target. | Makes every meaningful library independently testable and cacheable. |
-| `--tags=scope:...,type:...` | Adds architectural metadata to the Nx project. | Enables automated module-boundary rules based on domain ownership and library role. |
+| Option                      | Meaning                                                          | Benefit                                                                                      |
+| --------------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `@nx/react:library`         | Creates a library allowed to contain React components and hooks. | Keeps view code in a properly configured React compilation boundary.                         |
+| `@nx/js:library`            | Creates a framework-independent TypeScript/JavaScript library.   | Prevents contracts, API code, or utilities from depending on React accidentally.             |
+| `--bundler=none`            | Does not create a separately published package bundle.           | The consuming app bundles the source, avoiding unnecessary library build/publish complexity. |
+| `--unitTestRunner=vitest`   | Adds a Vitest test target.                                       | Makes every meaningful library independently testable and cacheable.                         |
+| `--tags=scope:...,type:...` | Adds architectural metadata to the Nx project.                   | Enables automated module-boundary rules based on domain ownership and library role.          |
 
-| Generated library | Why we create it | How it helps |
-|---|---|---|
-| `libs/shared/ui` | Holds reusable presentational components and design tokens. | Account and commerce share visual consistency without sharing workflows. |
-| `libs/shared/contracts` | Holds stable shell/provider and API boundary types. | Teams integrate through a deliberate public contract rather than implementation imports. |
-| `libs/shared/api-client` | Holds the generated OpenAPI client and request helpers. | Avoids duplicated handwritten request/response types. |
-| `libs/shared/config` | Holds public environment parsing and pure configuration utilities. | Centralizes safe configuration while keeping secrets on the server. |
-| `libs/shared/observability` | Defines telemetry interfaces and common metadata. | Providers report errors consistently without coupling to a vendor implementation. |
-| `libs/account/feature-auth` | Holds registration, login, logout, and account UI workflows. | Keeps the account application entry point thin and the feature independently testable. |
-| `libs/account/data-access` | Holds account API calls and account server-state logic. | Separates remote data access from presentation. |
-| `libs/commerce/feature-catalog` | Holds browsing and product-detail workflows. | Creates a cohesive catalog feature boundary. |
-| `libs/commerce/feature-selling` | Holds product creation, editing, and publishing workflows. | Keeps seller behavior separate from browsing concerns. |
-| `libs/commerce/feature-checkout` | Holds checkout, orders, and wallet presentation. | Isolates the highest-risk commerce flow for focused tests. |
-| `libs/commerce/data-access` | Holds commerce API calls and server-state logic. | Gives all commerce features one typed integration layer. |
-| `pnpm exec nx run-many -t lint` | Runs lint targets for all projects that define them. | Tests code-quality rules and the architectural boundary policy across the workspace. |
+| Generated library                | Why we create it                                                   | How it helps                                                                             |
+| -------------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `libs/shared/ui`                 | Holds reusable presentational components and design tokens.        | Account and commerce share visual consistency without sharing workflows.                 |
+| `libs/shared/contracts`          | Holds stable shell/provider and API boundary types.                | Teams integrate through a deliberate public contract rather than implementation imports. |
+| `libs/shared/api-client`         | Holds the generated OpenAPI client and request helpers.            | Avoids duplicated handwritten request/response types.                                    |
+| `libs/shared/config`             | Holds public environment parsing and pure configuration utilities. | Centralizes safe configuration while keeping secrets on the server.                      |
+| `libs/shared/observability`      | Defines telemetry interfaces and common metadata.                  | Providers report errors consistently without coupling to a vendor implementation.        |
+| `libs/account/feature-auth`      | Holds registration, login, logout, and account UI workflows.       | Keeps the account application entry point thin and the feature independently testable.   |
+| `libs/account/data-access`       | Holds account API calls and account server-state logic.            | Separates remote data access from presentation.                                          |
+| `libs/commerce/feature-catalog`  | Holds browsing and product-detail workflows.                       | Creates a cohesive catalog feature boundary.                                             |
+| `libs/commerce/feature-selling`  | Holds product creation, editing, and publishing workflows.         | Keeps seller behavior separate from browsing concerns.                                   |
+| `libs/commerce/feature-checkout` | Holds checkout, orders, and wallet presentation.                   | Isolates the highest-risk commerce flow for focused tests.                               |
+| `libs/commerce/data-access`      | Holds commerce API calls and server-state logic.                   | Gives all commerce features one typed integration layer.                                 |
+| `pnpm exec nx run-many -t lint`  | Runs lint targets for all projects that define them.               | Tests code-quality rules and the architectural boundary policy across the workspace.     |
 
 ### Federation inspection commands
 
-| Command | Why we use it | How it helps |
-|---|---|---|
-| `pnpm exec nx build account` | Creates the account production artifact. | Generates the deployable provider code and its remote entry. |
-| `pnpm exec nx build commerce` | Creates the commerce production artifact. | Generates the deployable provider code and its remote entry. |
-| `pnpm exec nx build shell` | Creates the shell production artifact. | Verifies that the consumer compiles against the public provider contracts. |
+| Command                                          | Why we use it                                                   | How it helps                                                                           |
+| ------------------------------------------------ | --------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `pnpm exec nx build account`                     | Creates the account production artifact.                        | Generates the deployable provider code and its remote entry.                           |
+| `pnpm exec nx build commerce`                    | Creates the commerce production artifact.                       | Generates the deployable provider code and its remote entry.                           |
+| `pnpm exec nx build shell`                       | Creates the shell production artifact.                          | Verifies that the consumer compiles against the public provider contracts.             |
 | `find apps -path '*/dist/remoteEntry.js' -print` | Searches generated application output for provider entry files. | Quickly confirms that the federation artifacts expected by deployments actually exist. |
-| `pnpm exec nx show project account` | Prints account project targets and configuration. | Reveals its real build command and output directory instead of relying on assumptions. |
-| `pnpm exec nx show project commerce` | Prints commerce project targets and configuration. | Reveals the provider's build metadata for Vercel and CI configuration. |
+| `pnpm exec nx show project account`              | Prints account project targets and configuration.               | Reveals its real build command and output directory instead of relying on assumptions. |
+| `pnpm exec nx show project commerce`             | Prints commerce project targets and configuration.              | Reveals the provider's build metadata for Vercel and CI configuration.                 |
 
 ### Backend and database commands
 
-| Command | Why we use it | How it helps |
-|---|---|---|
-| `pnpm exec nx add @nx/node@23.2.0` | Installs and initializes Nx's Node plugin. | Adds Node application/build generators and lets the API participate in the Nx graph. |
-| `pnpm exec nx g @nx/node:application apps/api-dev --bundler=esbuild` | Generates a local Node API application compiled with esbuild. | Provides a fast local adapter for the same Hono composition root used in Vercel Functions. |
-| `nx g @nx/js:library libs/backend/database ...` | Generates the persistence boundary. | Centralizes connection creation, schema, migrations, and transaction helpers. |
-| `nx g @nx/js:library libs/backend/auth ...` | Generates the authentication backend module. | Isolates passwords, sessions, CSRF, and authentication policies. |
-| `nx g @nx/js:library libs/backend/catalog ...` | Generates the product backend module. | Owns listing rules and product persistence. |
-| `nx g @nx/js:library libs/backend/orders ...` | Generates the order backend module. | Owns order lifecycle and purchase references. |
-| `nx g @nx/js:library libs/backend/wallet ...` | Generates the wallet backend module. | Isolates ledger invariants and balance calculations for stronger testing. |
-| `pnpm add hono @hono/node-server @hono/zod-openapi zod` | Installs the API framework, local Node adapter, OpenAPI integration, and validation. | Produces one validated API implementation that works locally and on Vercel. |
-| `pnpm add drizzle-orm postgres` | Installs the ORM/query layer and PostgreSQL driver. | Gives the API typed SQL access and transactional database operations. |
-| `pnpm add @node-rs/argon2` | Installs an Argon2 password-hashing implementation. | Protects stored passwords with a memory-hard algorithm and server-compatible binaries. |
-| `pnpm add --save-dev drizzle-kit testcontainers openapi-typescript openapi-fetch` | Installs migration, integration-test, and contract-generation tools. | Keeps schema generation and test tooling out of production dependency declarations. |
-| `docker compose up -d postgres` | Starts PostgreSQL from `compose.yaml` in detached mode. | Gives every developer a repeatable local database without a manual installation. |
-| `docker compose ps` | Shows Compose service status. | Confirms PostgreSQL is running before debugging application connection errors. |
-| `pnpm db:generate` | Runs the repository script that generates a migration from schema changes. | Turns model changes into reviewable SQL migration files. |
-| `pnpm db:migrate` | Applies pending migrations to the configured database. | Advances the schema in a controlled, repeatable order. |
-| `pnpm db:check` | Runs the repository's schema/migration validation script. | Detects drift or invalid migrations before deployment. |
-| `pnpm exec nx serve api-dev` | Starts the local API through Nx. | Enables caching/task orchestration metadata and gives the frontend a local `/api` target. |
-| `curl --fail http://localhost:3333/health` | Calls the health endpoint and exits non-zero for an HTTP error. | Provides a scriptable readiness check for local work and CI. |
-| `curl --fail http://localhost:3333/openapi.json` | Fetches the generated API description and fails on HTTP errors. | Confirms that the API contract is available before generating a client. |
-| `pnpm exec openapi-typescript http://localhost:3333/openapi.json --output .../generated.ts` | Converts the OpenAPI document into TypeScript definitions. | Keeps frontend types synchronized with the server contract. |
+| Command                                                                                     | Why we use it                                                                        | How it helps                                                                               |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `pnpm exec nx add @nx/node@23.2.0`                                                          | Installs and initializes Nx's Node plugin.                                           | Adds Node application/build generators and lets the API participate in the Nx graph.       |
+| `pnpm exec nx g @nx/node:application apps/api-dev --bundler=esbuild`                        | Generates a local Node API application compiled with esbuild.                        | Provides a fast local adapter for the same Hono composition root used in Vercel Functions. |
+| `nx g @nx/js:library libs/backend/database ...`                                             | Generates the persistence boundary.                                                  | Centralizes connection creation, schema, migrations, and transaction helpers.              |
+| `nx g @nx/js:library libs/backend/auth ...`                                                 | Generates the authentication backend module.                                         | Isolates passwords, sessions, CSRF, and authentication policies.                           |
+| `nx g @nx/js:library libs/backend/catalog ...`                                              | Generates the product backend module.                                                | Owns listing rules and product persistence.                                                |
+| `nx g @nx/js:library libs/backend/orders ...`                                               | Generates the order backend module.                                                  | Owns order lifecycle and purchase references.                                              |
+| `nx g @nx/js:library libs/backend/wallet ...`                                               | Generates the wallet backend module.                                                 | Isolates ledger invariants and balance calculations for stronger testing.                  |
+| `pnpm add hono @hono/node-server @hono/zod-openapi zod`                                     | Installs the API framework, local Node adapter, OpenAPI integration, and validation. | Produces one validated API implementation that works locally and on Vercel.                |
+| `pnpm add drizzle-orm postgres`                                                             | Installs the ORM/query layer and PostgreSQL driver.                                  | Gives the API typed SQL access and transactional database operations.                      |
+| `pnpm add @node-rs/argon2`                                                                  | Installs an Argon2 password-hashing implementation.                                  | Protects stored passwords with a memory-hard algorithm and server-compatible binaries.     |
+| `pnpm add --save-dev drizzle-kit testcontainers openapi-typescript openapi-fetch`           | Installs migration, integration-test, and contract-generation tools.                 | Keeps schema generation and test tooling out of production dependency declarations.        |
+| `docker compose up -d postgres`                                                             | Starts PostgreSQL from `compose.yaml` in detached mode.                              | Gives every developer a repeatable local database without a manual installation.           |
+| `docker compose ps`                                                                         | Shows Compose service status.                                                        | Confirms PostgreSQL is running before debugging application connection errors.             |
+| `pnpm db:generate`                                                                          | Runs the repository script that generates a migration from schema changes.           | Turns model changes into reviewable SQL migration files.                                   |
+| `pnpm db:migrate`                                                                           | Applies pending migrations to the configured database.                               | Advances the schema in a controlled, repeatable order.                                     |
+| `pnpm db:check`                                                                             | Runs the repository's schema/migration validation script.                            | Detects drift or invalid migrations before deployment.                                     |
+| `pnpm exec nx serve api-dev`                                                                | Starts the local API through Nx.                                                     | Enables caching/task orchestration metadata and gives the frontend a local `/api` target.  |
+| `curl --fail http://localhost:3333/health`                                                  | Calls the health endpoint and exits non-zero for an HTTP error.                      | Provides a scriptable readiness check for local work and CI.                               |
+| `curl --fail http://localhost:3333/openapi.json`                                            | Fetches the generated API description and fails on HTTP errors.                      | Confirms that the API contract is available before generating a client.                    |
+| `pnpm exec openapi-typescript http://localhost:3333/openapi.json --output .../generated.ts` | Converts the OpenAPI document into TypeScript definitions.                           | Keeps frontend types synchronized with the server contract.                                |
 
 ### Feature verification commands
 
-| Command | Why we use it | How it helps |
-|---|---|---|
-| `pnpm exec nx test backend-auth` | Runs authentication backend tests. | Verifies password, session, CSRF, and negative security behavior in isolation. |
-| `pnpm exec nx test account-data-access` | Runs account API-integration client tests. | Detects request/response and error-handling regressions. |
-| `pnpm exec nx test account-feature-auth` | Runs account UI feature tests. | Confirms registration and login behavior from the user's perspective. |
-| `pnpm add @vercel/blob` | Installs the Blob SDK as a runtime dependency. | Enables direct product-image uploads without routing large files through a Function. |
-| `pnpm exec vercel env pull .env.local` | Downloads the linked Vercel project's development environment into a local ignored file. | Reproduces cloud integration configuration locally without committing secrets. |
-| `pnpm exec nx test backend-catalog` | Runs server-side catalog tests. | Verifies listing validation and ownership policies. |
-| `pnpm exec nx test commerce-feature-catalog` | Runs catalog UI tests. | Verifies browsing, product details, pagination, and failure states. |
-| `pnpm exec nx test commerce-feature-selling` | Runs seller workflow tests. | Verifies draft, upload, publish, edit, and remove behavior. |
-| `pnpm exec nx test backend-wallet` | Runs ledger and balance tests. | Protects the monetary invariants of the simulated wallet. |
-| `pnpm exec nx test backend-orders` | Runs order lifecycle tests. | Verifies that products and orders transition consistently. |
-| `pnpm exec nx test commerce-feature-checkout` | Runs checkout UI tests. | Checks duplicate submission, errors, and success behavior before E2E tests. |
+| Command                                       | Why we use it                                                                            | How it helps                                                                         |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `pnpm exec nx test backend-auth`              | Runs authentication backend tests.                                                       | Verifies password, session, CSRF, and negative security behavior in isolation.       |
+| `pnpm exec nx test account-data-access`       | Runs account API-integration client tests.                                               | Detects request/response and error-handling regressions.                             |
+| `pnpm exec nx test account-feature-auth`      | Runs account UI feature tests.                                                           | Confirms registration and login behavior from the user's perspective.                |
+| `pnpm add @vercel/blob`                       | Installs the Blob SDK as a runtime dependency.                                           | Enables direct product-image uploads without routing large files through a Function. |
+| `pnpm exec vercel env pull .env.local`        | Downloads the linked Vercel project's development environment into a local ignored file. | Reproduces cloud integration configuration locally without committing secrets.       |
+| `pnpm exec nx test backend-catalog`           | Runs server-side catalog tests.                                                          | Verifies listing validation and ownership policies.                                  |
+| `pnpm exec nx test commerce-feature-catalog`  | Runs catalog UI tests.                                                                   | Verifies browsing, product details, pagination, and failure states.                  |
+| `pnpm exec nx test commerce-feature-selling`  | Runs seller workflow tests.                                                              | Verifies draft, upload, publish, edit, and remove behavior.                          |
+| `pnpm exec nx test backend-wallet`            | Runs ledger and balance tests.                                                           | Protects the monetary invariants of the simulated wallet.                            |
+| `pnpm exec nx test backend-orders`            | Runs order lifecycle tests.                                                              | Verifies that products and orders transition consistently.                           |
+| `pnpm exec nx test commerce-feature-checkout` | Runs checkout UI tests.                                                                  | Checks duplicate submission, errors, and success behavior before E2E tests.          |
 
 The repeated `nx build account` and `nx build commerce` commands after feature tests confirm that passing unit tests have not hidden a production-bundling or federation error.
 
 ### Test-platform commands
 
-| Command | Why we use it | How it helps |
-|---|---|---|
-| `pnpm exec nx add @nx/playwright@23.2.0` | Installs and initializes the Nx Playwright plugin. | Registers cacheable E2E tasks and project-aware Playwright configuration. |
-| `pnpm exec nx g @nx/playwright:configuration --project=shell` | Creates Playwright configuration for the composed shell. | Gives the whole user journey one browser-level test project. |
-| `pnpm exec playwright install --with-deps chromium` | Downloads Chromium and required operating-system packages. | Makes browser tests runnable in clean developer and CI environments. |
-| `pnpm exec nx g @nx/playwright:configuration --help` | Shows the installed generator's accepted options. | Resolves version-specific flag differences without guesswork. |
-| `pnpm exec nx add @nx/storybook@23.2.0` | Installs and initializes Storybook's Nx plugin. | Adds cacheable Storybook serve/build tasks to the project graph. |
-| `pnpm exec nx g @nx/react:storybook-configuration shared-ui` | Configures Storybook for the shared UI library. | Creates an isolated environment to review component states and accessibility. |
-| `pnpm exec nx storybook shared-ui` | Starts the shared UI Storybook server. | Enables rapid visual development without running the complete application. |
-| `pnpm exec nx run-many -t test` | Runs unit/component tests across all testable projects. | Uses Nx parallelism and cache instead of calling Vitest separately in every library. |
-| `pnpm exec nx e2e shell-e2e` | Runs the shell's composed Playwright suite. | Verifies user behavior across shell, providers, API, and database. |
-| `pnpm exec nx run-many -t lint,typecheck,build` | Runs static quality checks and production builds across the workspace. | Detects import, type, and bundling failures together. |
-| `pnpm exec nx run shell:federation-smoke` | Runs the custom remote-entry compatibility target. | Detects missing providers, invalid exposures, and dependency-version mismatches before E2E. |
+| Command                                                       | Why we use it                                                          | How it helps                                                                                |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `pnpm exec nx add @nx/playwright@23.2.0`                      | Installs and initializes the Nx Playwright plugin.                     | Registers cacheable E2E tasks and project-aware Playwright configuration.                   |
+| `pnpm exec nx g @nx/playwright:configuration --project=shell` | Creates Playwright configuration for the composed shell.               | Gives the whole user journey one browser-level test project.                                |
+| `pnpm exec playwright install --with-deps chromium`           | Downloads Chromium and required operating-system packages.             | Makes browser tests runnable in clean developer and CI environments.                        |
+| `pnpm exec nx g @nx/playwright:configuration --help`          | Shows the installed generator's accepted options.                      | Resolves version-specific flag differences without guesswork.                               |
+| `pnpm exec nx add @nx/storybook@23.2.0`                       | Installs and initializes Storybook's Nx plugin.                        | Adds cacheable Storybook serve/build tasks to the project graph.                            |
+| `pnpm exec nx g @nx/react:storybook-configuration shared-ui`  | Configures Storybook for the shared UI library.                        | Creates an isolated environment to review component states and accessibility.               |
+| `pnpm exec nx storybook shared-ui`                            | Starts the shared UI Storybook server.                                 | Enables rapid visual development without running the complete application.                  |
+| `pnpm exec nx run-many -t test`                               | Runs unit/component tests across all testable projects.                | Uses Nx parallelism and cache instead of calling Vitest separately in every library.        |
+| `pnpm exec nx e2e shell-e2e`                                  | Runs the shell's composed Playwright suite.                            | Verifies user behavior across shell, providers, API, and database.                          |
+| `pnpm exec nx run-many -t lint,typecheck,build`               | Runs static quality checks and production builds across the workspace. | Detects import, type, and bundling failures together.                                       |
+| `pnpm exec nx run shell:federation-smoke`                     | Runs the custom remote-entry compatibility target.                     | Detects missing providers, invalid exposures, and dependency-version mismatches before E2E. |
 
 ### CI commands
 
-| Command | Why we use it | How it helps |
-|---|---|---|
-| `pnpm exec nx connect` | Connects the workspace to Nx Cloud. | Shares trusted task results between developers and CI and enables later distribution. |
-| `pnpm install --frozen-lockfile` | Installs exactly the dependency graph recorded in the lockfile and fails if manifests disagree. | Prevents CI from silently resolving versions different from those reviewed. |
-| `pnpm exec nx format:check` | Checks repository formatting without rewriting files. | Makes formatting a deterministic merge gate. |
-| `pnpm exec nx affected -t lint,typecheck,test,build --parallel=3` | Runs four quality targets for affected projects with at most three concurrent processes. | Reduces CI work while limiting memory/CPU pressure on the runner. |
-| `pnpm exec nx affected -t federation-smoke` | Runs federation smoke checks only where the project graph says they are affected. | Avoids unnecessary browser/network checks while protecting runtime contracts. |
+| Command                                                           | Why we use it                                                                                   | How it helps                                                                          |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `pnpm exec nx connect`                                            | Connects the workspace to Nx Cloud.                                                             | Shares trusted task results between developers and CI and enables later distribution. |
+| `pnpm install --frozen-lockfile`                                  | Installs exactly the dependency graph recorded in the lockfile and fails if manifests disagree. | Prevents CI from silently resolving versions different from those reviewed.           |
+| `pnpm exec nx format:check`                                       | Checks repository formatting without rewriting files.                                           | Makes formatting a deterministic merge gate.                                          |
+| `pnpm exec nx affected -t lint,typecheck,test,build --parallel=3` | Runs four quality targets for affected projects with at most three concurrent processes.        | Reduces CI work while limiting memory/CPU pressure on the runner.                     |
+| `pnpm exec nx affected -t federation-smoke`                       | Runs federation smoke checks only where the project graph says they are affected.               | Avoids unnecessary browser/network checks while protecting runtime contracts.         |
 
 In the GitHub Actions snippet, `actions/checkout` downloads the repository and `fetch-depth: 0` retains full history. Nx needs that history to calculate the correct affected base and head.
 
 ### Vercel commands
 
-| Command | Why we use it | How it helps |
-|---|---|---|
-| `pnpm add --save-dev vercel` | Installs the Vercel CLI locally. | Pins deployment tooling without shipping it in application runtime dependencies. |
-| `pnpm exec vercel login` | Authenticates the local CLI. | Authorizes non-CI setup operations without putting a token in source code. |
-| `pnpm exec vercel link --repo` | Links monorepo directories to Vercel project metadata. | Allows local environment pulls and project-aware Vercel commands. |
-| `pnpm exec nx build shell/account/commerce` | Builds each deployment locally. | Reveals output paths and production errors before configuring Vercel projects. |
-| `pnpm exec nx show project shell/account/commerce` | Displays each project's resolved targets and outputs. | Prevents incorrect Vercel build/output-directory configuration. |
-| `pnpm add @vercel/related-projects` | Installs the API for reading related preview/production project hosts. | Lets the shell generate a remote map for the exact provider deployments associated with a commit. |
-| `pnpm exec vercel env add DATABASE_URL production` | Adds the production pooled PostgreSQL connection as an encrypted Vercel variable. | Keeps database credentials outside Git and makes them available only at deployment/runtime. |
-| `pnpm exec vercel env add SESSION_SECRET production` | Adds the production session secret. | Separates cryptographic secrets from source and development environments. |
-| `pnpm exec vercel env add ACCOUNT_REMOTE_URL production` | Adds the stable account provider URL. | Lets production change or roll back the account deployment without editing source code. |
-| `pnpm exec vercel env add COMMERCE_REMOTE_URL production` | Adds the stable commerce provider URL. | Gives the commerce provider the same environment-controlled release behavior. |
-| `pnpm exec vercel env pull .env.local` | Pulls development values for the currently linked project. | Makes local behavior match Vercel while keeping the file ignored by Git. |
+| Command                                                   | Why we use it                                                                     | How it helps                                                                                      |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `pnpm add --save-dev vercel`                              | Installs the Vercel CLI locally.                                                  | Pins deployment tooling without shipping it in application runtime dependencies.                  |
+| `pnpm exec vercel login`                                  | Authenticates the local CLI.                                                      | Authorizes non-CI setup operations without putting a token in source code.                        |
+| `pnpm exec vercel link --repo`                            | Links monorepo directories to Vercel project metadata.                            | Allows local environment pulls and project-aware Vercel commands.                                 |
+| `pnpm exec nx build shell/account/commerce`               | Builds each deployment locally.                                                   | Reveals output paths and production errors before configuring Vercel projects.                    |
+| `pnpm exec nx show project shell/account/commerce`        | Displays each project's resolved targets and outputs.                             | Prevents incorrect Vercel build/output-directory configuration.                                   |
+| `pnpm add @vercel/related-projects`                       | Installs the API for reading related preview/production project hosts.            | Lets the shell generate a remote map for the exact provider deployments associated with a commit. |
+| `pnpm exec vercel env add DATABASE_URL production`        | Adds the production pooled PostgreSQL connection as an encrypted Vercel variable. | Keeps database credentials outside Git and makes them available only at deployment/runtime.       |
+| `pnpm exec vercel env add SESSION_SECRET production`      | Adds the production session secret.                                               | Separates cryptographic secrets from source and development environments.                         |
+| `pnpm exec vercel env add ACCOUNT_REMOTE_URL production`  | Adds the stable account provider URL.                                             | Lets production change or roll back the account deployment without editing source code.           |
+| `pnpm exec vercel env add COMMERCE_REMOTE_URL production` | Adds the stable commerce provider URL.                                            | Gives the commerce provider the same environment-controlled release behavior.                     |
+| `pnpm exec vercel env pull .env.local`                    | Pulls development values for the currently linked project.                        | Makes local behavior match Vercel while keeping the file ignored by Git.                          |
 
 ### Security, daily-work, and final-check commands
 
-| Command | Why we use it | How it helps |
-|---|---|---|
-| `pnpm audit --prod` | Checks production dependency versions against known vulnerability advisories. | Focuses the deployment gate on packages that can reach production; it complements, not replaces, GitHub dependency review. |
-| `pnpm exec nx test <project> --watch` | Re-runs one project's tests when its files change. | Shortens the feedback loop while implementing a feature. |
-| `pnpm exec nx lint <project>` | Lints one actively edited project. | Gives fast local boundary and code-quality feedback before running the whole workspace. |
-| `docker compose up -d postgres` followed by the four `nx serve` commands | Starts the complete local system. | Supports manual composed testing while keeping every process and ownership boundary visible. |
-| `pnpm exec nx affected -t lint,typecheck,test,build` before a PR | Reproduces the primary CI quality gate locally. | Catches most merge-blocking failures before consuming CI time. |
-| `pnpm exec nx e2e shell-e2e` before a PR | Runs the critical composed journey locally. | Detects cross-provider, API, cookie, and database integration failures. |
-| Final `pnpm install --frozen-lockfile` | Revalidates that the repository can be installed reproducibly from scratch. | Detects an uncommitted or inconsistent lockfile. |
-| Final `nx run-many`, federation smoke, E2E, and audit commands | Runs the complete technical release gate. | Produces evidence that static checks, builds, runtime composition, user journeys, and dependency security all pass together. |
+| Command                                                                  | Why we use it                                                                 | How it helps                                                                                                                 |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm audit --prod`                                                      | Checks production dependency versions against known vulnerability advisories. | Focuses the deployment gate on packages that can reach production; it complements, not replaces, GitHub dependency review.   |
+| `pnpm exec nx test <project> --watch`                                    | Re-runs one project's tests when its files change.                            | Shortens the feedback loop while implementing a feature.                                                                     |
+| `pnpm exec nx lint <project>`                                            | Lints one actively edited project.                                            | Gives fast local boundary and code-quality feedback before running the whole workspace.                                      |
+| `docker compose up -d postgres` followed by the four `nx serve` commands | Starts the complete local system.                                             | Supports manual composed testing while keeping every process and ownership boundary visible.                                 |
+| `pnpm exec nx affected -t lint,typecheck,test,build` before a PR         | Reproduces the primary CI quality gate locally.                               | Catches most merge-blocking failures before consuming CI time.                                                               |
+| `pnpm exec nx e2e shell-e2e` before a PR                                 | Runs the critical composed journey locally.                                   | Detects cross-provider, API, cookie, and database integration failures.                                                      |
+| Final `pnpm install --frozen-lockfile`                                   | Revalidates that the repository can be installed reproducibly from scratch.   | Detects an uncommitted or inconsistent lockfile.                                                                             |
+| Final `nx run-many`, federation smoke, E2E, and audit commands           | Runs the complete technical release gate.                                     | Produces evidence that static checks, builds, runtime composition, user journeys, and dependency security all pass together. |
 
 ## Phase completion summary
 
-| Phase | Deliverable | Proof |
-|---|---|---|
-| 0 | Runtime and ADR baseline | Pinned versions and accepted decisions |
-| 1 | Shell + two providers | Standalone and composed builds |
-| 2 | Enforced domain libraries | Invalid dependencies fail lint |
-| 3 | Runtime remote registry | Provider outage is isolated |
-| 4 | API, database, OpenAPI | Real DB integration test passes |
-| 5 | Account journey | Secure register/login/logout E2E |
-| 6 | Listings | Seller publishes; buyer browses |
-| 7 | Simulated purchase | Concurrent purchase and ledger invariants pass |
-| 8 | Test platform | Contract, E2E, resilience tests pass |
-| 9 | CI | Required affected checks gate merge |
-| 10 | Vercel previews | Exact preview artifacts compose |
-| 11 | Operations | Rollback and restore drills succeed |
+| Phase | Deliverable               | Proof                                          |
+| ----- | ------------------------- | ---------------------------------------------- |
+| 0     | Runtime and ADR baseline  | Pinned versions and accepted decisions         |
+| 1     | Shell + two providers     | Standalone and composed builds                 |
+| 2     | Enforced domain libraries | Invalid dependencies fail lint                 |
+| 3     | Runtime remote registry   | Provider outage is isolated                    |
+| 4     | API, database, OpenAPI    | Real DB integration test passes                |
+| 5     | Account journey           | Secure register/login/logout E2E               |
+| 6     | Listings                  | Seller publishes; buyer browses                |
+| 7     | Simulated purchase        | Concurrent purchase and ledger invariants pass |
+| 8     | Test platform             | Contract, E2E, resilience tests pass           |
+| 9     | CI                        | Required affected checks gate merge            |
+| 10    | Vercel previews           | Exact preview artifacts compose                |
+| 11    | Operations                | Rollback and restore drills succeed            |
 
 ## Final architecture verification
 
