@@ -23,7 +23,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec nx format:check
-      - run: pnpm exec nx affected -t lint --parallel=3
+      - run: pnpm exec nx affected -t lint --parallel=3 --base=origin/${{ github.event.repository.default_branch }} --head=HEAD
 
   typecheck:
     name: typecheck
@@ -53,7 +53,7 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec nx affected -t test --parallel=3
+      - run: pnpm exec nx affected -t test --parallel=3 --base=origin/${{ github.event.repository.default_branch }} --head=HEAD
 
   build:
     name: build
@@ -68,8 +68,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec nx affected -t build --parallel=3
-      - run: pnpm exec nx affected -t federation-smoke
+      - run: pnpm exec nx affected -t build --parallel=3 --base=origin/${{ github.event.repository.default_branch }} --head=HEAD
+      - run: pnpm exec nx affected -t federation-smoke --base=origin/${{ github.event.repository.default_branch }} --head=HEAD
 
   performance:
     name: performance
