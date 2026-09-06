@@ -12,7 +12,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:check": "drizzle-kit check",
     "bundle:check": "node tools/scripts/check-bundle-budgets.mjs",
-    "tokens:build": "node libs/shared/design-tokens/scripts/build-tokens.mjs"
+    "tokens:build": "node libs/shared/design-tokens/scripts/build-tokens.mjs",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hono/node-server": "^2.1.1",
@@ -64,7 +65,9 @@
     "@vitest/ui": "~4.1.0",
     "drizzle-kit": "^0.31.10",
     "esbuild": "^0.27.0",
+    "husky": "^9.1.7",
     "jsdom": "^27.1.0",
+    "lint-staged": "^17.5.0",
     "msw": "^2.15.0",
     "nx": "23.2.0",
     "openapi-fetch": "^0.17.0",
@@ -79,6 +82,9 @@
     "vercel": "^59.11.2",
     "vite": "^8.0.13",
     "vitest": "~4.1.0"
+  },
+  "lint-staged": {
+    "*.{css,js,json,jsx,md,mjs,ts,tsx,yaml,yml}": "oxfmt --write"
   },
   "devEngines": {
     "packageManager": {
