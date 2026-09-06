@@ -1,26 +1,25 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from "vitest";
 
-import primitives from '../../tokens/primitives.tokens.json';
-import darkTokens from '../../tokens/semantic-dark.tokens.json';
-import lightTokens from '../../tokens/semantic-light.tokens.json';
+import primitives from "../../tokens/primitives.tokens.json";
+import darkTokens from "../../tokens/semantic-dark.tokens.json";
+import lightTokens from "../../tokens/semantic-light.tokens.json";
 
 type TokenFile = Record<string, unknown>;
 
 const pairs = [
-  ['primary button', 'color.action.primary.foreground', 'color.action.primary.default'],
-  ['danger button', 'color.action.danger.foreground', 'color.action.danger.default'],
-  ['primary text', 'color.text.primary', 'color.surface.default'],
-  ['link text', 'color.text.link', 'color.surface.default'],
-  ['success status', 'color.status.success.foreground', 'color.status.success.surface'],
-  ['warning status', 'color.status.warning.foreground', 'color.status.warning.surface'],
-  ['danger status', 'color.status.danger.foreground', 'color.status.danger.surface'],
+  ["primary button", "color.action.primary.foreground", "color.action.primary.default"],
+  ["danger button", "color.action.danger.foreground", "color.action.danger.default"],
+  ["primary text", "color.text.primary", "color.surface.default"],
+  ["link text", "color.text.link", "color.surface.default"],
+  ["success status", "color.status.success.foreground", "color.status.success.surface"],
+  ["warning status", "color.status.warning.foreground", "color.status.warning.surface"],
+  ["danger status", "color.status.danger.foreground", "color.status.danger.surface"],
 ] as const;
 
-describe('theme contrast', () => {
+describe("theme contrast", () => {
   const themes = { dark: darkTokens, light: lightTokens };
 
   for (const [theme, tokens] of Object.entries(themes)) {
-
     for (const [name, foregroundPath, backgroundPath] of pairs) {
       it(`${theme} ${name} meets the WCAG AA 4.5:1 contrast threshold`, () => {
         const foreground = resolveToken(tokens, foregroundPath);
@@ -39,7 +38,7 @@ function resolveToken(tokens: TokenFile, tokenPath: string): string {
     value = getValue(primitives, value.slice(1, -1));
   }
 
-  if (typeof value !== 'string' || !value.startsWith('#')) {
+  if (typeof value !== "string" || !value.startsWith("#")) {
     throw new Error(`Expected ${tokenPath} to resolve to a hexadecimal colour.`);
   }
 
@@ -47,8 +46,8 @@ function resolveToken(tokens: TokenFile, tokenPath: string): string {
 }
 
 function getValue(tokens: TokenFile, tokenPath: string): unknown {
-  const token = tokenPath.split('.').reduce<unknown>((current, segment) => {
-    if (!current || typeof current !== 'object') return undefined;
+  const token = tokenPath.split(".").reduce<unknown>((current, segment) => {
+    if (!current || typeof current !== "object") return undefined;
 
     return (current as Record<string, unknown>)[segment];
   }, tokens) as Record<string, unknown> | undefined;
@@ -57,7 +56,7 @@ function getValue(tokens: TokenFile, tokenPath: string): unknown {
 }
 
 function isReference(value: unknown): value is string {
-  return typeof value === 'string' && /^\{.+\}$/.test(value);
+  return typeof value === "string" && /^\{.+\}$/.test(value);
 }
 
 function contrastRatio(foreground: string, background: string): number {
@@ -80,9 +79,7 @@ function relativeLuminance(hex: string): number {
   }
 
   const [red, green, blue] = channels.map((channel) =>
-    channel <= 0.04045
-      ? channel / 12.92
-      : ((channel + 0.055) / 1.055) ** 2.4,
+    channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4,
   );
 
   return 0.2126 * red + 0.7152 * green + 0.0722 * blue;

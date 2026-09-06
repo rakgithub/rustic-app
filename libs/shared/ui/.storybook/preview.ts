@@ -1,25 +1,25 @@
-import type { Preview } from '@storybook/react-vite';
+import type { Preview } from "@storybook/react-vite";
 
-import 'design-tokens/theme.css';
-import { resolveTheme, type ThemePreference } from 'design-tokens';
+import "design-tokens/theme.css";
+import { resolveTheme, type ThemePreference } from "design-tokens";
 
 const preview: Preview = {
   globalTypes: {
     theme: {
-      description: 'Theme applied to the component preview',
+      description: "Theme applied to the component preview",
       toolbar: {
-        icon: 'mirror',
+        icon: "mirror",
         items: [
-          { value: 'light', title: 'Light' },
-          { value: 'dark', title: 'Dark' },
-          { value: 'system', title: 'System' },
+          { value: "light", title: "Light" },
+          { value: "dark", title: "Dark" },
+          { value: "system", title: "System" },
         ],
         dynamicTitle: true,
       },
     },
   },
   initialGlobals: {
-    theme: 'light',
+    theme: "light",
   },
   decorators: [
     (Story, context) => {

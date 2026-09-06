@@ -257,14 +257,14 @@ The shell owns the user setting: `light`, `dark`, or `system`. It sets the
 resolved value on the document root.
 
 ```ts
-export type ThemePreference = 'light' | 'dark' | 'system';
+export type ThemePreference = "light" | "dark" | "system";
 
 export function applyTheme(preference: ThemePreference): void {
   const resolved =
-    preference === 'system'
-      ? window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light'
+    preference === "system"
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
       : preference;
 
   document.documentElement.dataset.theme = resolved;
@@ -283,7 +283,7 @@ same shared initializer only when they run standalone on ports 5101 and 5102.
 Each standalone entry point imports the generated theme stylesheet:
 
 ```ts
-import 'design-tokens/theme.css';
+import "design-tokens/theme.css";
 ```
 
 The shell imports it for the composed application. The provider applications

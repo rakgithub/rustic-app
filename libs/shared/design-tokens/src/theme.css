@@ -1,12 +1,12 @@
-@import './generated/primitives.css';
-@import './generated/themes.css';
-@import './generated/components.css';
+@import "./generated/primitives.css";
+@import "./generated/themes.css";
+@import "./generated/components.css";
 
 :root,
-[data-theme='light'] {
+[data-theme="light"] {
   color-scheme: light;
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   color-scheme: dark;
 }

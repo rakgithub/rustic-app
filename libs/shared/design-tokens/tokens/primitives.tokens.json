@@ -81,20 +81,10 @@
     "family": {
       "$type": "fontFamily",
       "sans": {
-        "$value": [
-          "Inter",
-          "ui-sans-serif",
-          "system-ui",
-          "sans-serif"
-        ]
+        "$value": ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
       },
       "mono": {
-        "$value": [
-          "ui-monospace",
-          "SFMono-Regular",
-          "Menlo",
-          "monospace"
-        ]
+        "$value": ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"]
       }
     },
     "size": {

@@ -1,39 +1,37 @@
-export const THEME_PREFERENCE_STORAGE_KEY = 'rustic.theme-preference';
+export const THEME_PREFERENCE_STORAGE_KEY = "rustic.theme-preference";
 
-export type ThemePreference = 'light' | 'dark' | 'system';
-export type ResolvedTheme = Exclude<ThemePreference, 'system'>;
+export type ThemePreference = "light" | "dark" | "system";
+export type ResolvedTheme = Exclude<ThemePreference, "system">;
 
-const themePreferences = new Set<ThemePreference>(['light', 'dark', 'system']);
+const themePreferences = new Set<ThemePreference>(["light", "dark", "system"]);
 
 export function isThemePreference(value: unknown): value is ThemePreference {
-  return typeof value === 'string' && themePreferences.has(value as ThemePreference);
+  return typeof value === "string" && themePreferences.has(value as ThemePreference);
 }
 
 export function resolveTheme(
   preference: ThemePreference,
   systemPrefersDark = getSystemPrefersDark(),
 ): ResolvedTheme {
-  if (preference === 'system') return systemPrefersDark ? 'dark' : 'light';
+  if (preference === "system") return systemPrefersDark ? "dark" : "light";
 
   return preference;
 }
 
 export function getStoredThemePreference(): ThemePreference {
-  if (typeof window === 'undefined') return 'system';
+  if (typeof window === "undefined") return "system";
 
   try {
-    const storedPreference = window.localStorage.getItem(
-      THEME_PREFERENCE_STORAGE_KEY,
-    );
+    const storedPreference = window.localStorage.getItem(THEME_PREFERENCE_STORAGE_KEY);
 
-    return isThemePreference(storedPreference) ? storedPreference : 'system';
+    return isThemePreference(storedPreference) ? storedPreference : "system";
   } catch {
-    return 'system';
+    return "system";
   }
 }
 
 export function storeThemePreference(preference: ThemePreference): void {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
   try {
     window.localStorage.setItem(THEME_PREFERENCE_STORAGE_KEY, preference);
@@ -56,9 +54,10 @@ export function applyTheme(
   return resolvedTheme;
 }
 
-export function initializeTheme(
-  root: HTMLElement | undefined = getDocumentElement(),
-): { preference: ThemePreference; resolvedTheme: ResolvedTheme } {
+export function initializeTheme(root: HTMLElement | undefined = getDocumentElement()): {
+  preference: ThemePreference;
+  resolvedTheme: ResolvedTheme;
+} {
   const preference = getStoredThemePreference();
 
   return {
@@ -72,31 +71,31 @@ export function watchSystemTheme(
   onChange: (theme: ResolvedTheme) => void,
 ): () => void {
   if (
-    preference !== 'system' ||
-    typeof window === 'undefined' ||
-    typeof window.matchMedia !== 'function'
+    preference !== "system" ||
+    typeof window === "undefined" ||
+    typeof window.matchMedia !== "function"
   ) {
     return () => undefined;
   }
 
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   const listener = (event: MediaQueryListEvent) => {
-    onChange(event.matches ? 'dark' : 'light');
+    onChange(event.matches ? "dark" : "light");
   };
 
-  mediaQuery.addEventListener('change', listener);
+  mediaQuery.addEventListener("change", listener);
 
-  return () => mediaQuery.removeEventListener('change', listener);
+  return () => mediaQuery.removeEventListener("change", listener);
 }
 
 function getSystemPrefersDark(): boolean {
   return (
-    typeof window !== 'undefined' &&
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
   );
 }
 
 function getDocumentElement(): HTMLElement | undefined {
-  return typeof document === 'undefined' ? undefined : document.documentElement;
+  return typeof document === "undefined" ? undefined : document.documentElement;
 }
