@@ -71,6 +71,21 @@ jobs:
       - run: pnpm exec nx affected -t build --parallel=3 --base=origin/${{ github.event.repository.default_branch }} --head=HEAD
       - run: pnpm exec nx affected -t federation-smoke --base=origin/${{ github.event.repository.default_branch }} --head=HEAD
 
+  design-system:
+    name: design system
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm tokens:build
+      - run: git diff --exit-code -- libs/shared/design-tokens/src/generated
+      - run: pnpm exec storybook build --config-dir libs/shared/ui/.storybook --output-dir /tmp/rustic-ui-storybook
+
   performance:
     name: performance
     runs-on: ubuntu-latest

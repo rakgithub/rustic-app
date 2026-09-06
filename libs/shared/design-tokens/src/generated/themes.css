@@ -1,0 +1,96 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+:root,
+[data-theme="light"] {
+  --color-text-primary: var(--color-neutral-950, #09090b);
+  --color-text-secondary: var(--color-neutral-600, #52525b);
+  --color-text-muted: var(--color-neutral-500, #71717a);
+  --color-text-disabled: var(--color-neutral-400, #a1a1aa);
+  --color-text-inverse: var(--color-neutral-0, #ffffff);
+  --color-text-link: var(--color-blue-600, #2563eb);
+  --color-surface-canvas: var(--color-neutral-50, #fafafa);
+  --color-surface-default: var(--color-neutral-0, #ffffff);
+  --color-surface-raised: var(--color-neutral-0, #ffffff);
+  --color-surface-sunken: var(--color-neutral-100, #f4f4f5);
+  --color-surface-disabled: var(--color-neutral-100, #f4f4f5);
+  --color-surface-inverse: var(--color-neutral-950, #09090b);
+  --color-border-default: var(--color-neutral-200, #e4e4e7);
+  --color-border-strong: var(--color-neutral-300, #d4d4d8);
+  --color-border-subtle: var(--color-neutral-100, #f4f4f5);
+  --color-border-focus: var(--color-blue-600, #2563eb);
+  --color-border-disabled: var(--color-neutral-200, #e4e4e7);
+  --color-overlay-backdrop: var(--color-black-alpha-50, rgba(0, 0, 0, 0.5));
+  --color-action-primary-default: var(--color-blue-600, #2563eb);
+  --color-action-primary-hover: var(--color-blue-700, #1d4ed8);
+  --color-action-primary-active: var(--color-blue-700, #1d4ed8);
+  --color-action-primary-disabled: var(--color-neutral-300, #d4d4d8);
+  --color-action-primary-foreground: var(--color-neutral-0, #ffffff);
+  --color-action-secondary-default: var(--color-neutral-100, #f4f4f5);
+  --color-action-secondary-hover: var(--color-neutral-200, #e4e4e7);
+  --color-action-secondary-active: var(--color-neutral-300, #d4d4d8);
+  --color-action-secondary-disabled: var(--color-neutral-100, #f4f4f5);
+  --color-action-secondary-foreground: var(--color-neutral-950, #09090b);
+  --color-action-danger-default: var(--color-red-600, #dc2626);
+  --color-action-danger-hover: var(--color-red-700, #b91c1c);
+  --color-action-danger-active: var(--color-red-700, #b91c1c);
+  --color-action-danger-foreground: var(--color-neutral-0, #ffffff);
+  --color-status-success-foreground: var(--color-green-700, #15803d);
+  --color-status-success-surface: var(--color-green-50, #f0fdf4);
+  --color-status-success-border: var(--color-green-500, #22c55e);
+  --color-status-warning-foreground: var(--color-amber-700, #b45309);
+  --color-status-warning-surface: var(--color-amber-50, #fffbeb);
+  --color-status-warning-border: var(--color-amber-500, #f59e0b);
+  --color-status-danger-foreground: var(--color-red-700, #b91c1c);
+  --color-status-danger-surface: var(--color-red-50, #fef2f2);
+  --color-status-danger-border: var(--color-red-500, #ef4444);
+}
+
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+[data-theme="dark"] {
+  --color-text-primary: var(--color-neutral-50, #fafafa);
+  --color-text-secondary: var(--color-neutral-300, #d4d4d8);
+  --color-text-muted: var(--color-neutral-400, #a1a1aa);
+  --color-text-disabled: var(--color-neutral-500, #71717a);
+  --color-text-inverse: var(--color-neutral-950, #09090b);
+  --color-text-link: var(--color-blue-500, #3b82f6);
+  --color-surface-canvas: var(--color-neutral-950, #09090b);
+  --color-surface-default: var(--color-neutral-900, #18181b);
+  --color-surface-raised: var(--color-neutral-800, #27272a);
+  --color-surface-sunken: var(--color-neutral-950, #09090b);
+  --color-surface-disabled: var(--color-neutral-800, #27272a);
+  --color-surface-inverse: var(--color-neutral-0, #ffffff);
+  --color-border-default: var(--color-neutral-700, #3f3f46);
+  --color-border-strong: var(--color-neutral-600, #52525b);
+  --color-border-subtle: var(--color-neutral-800, #27272a);
+  --color-border-focus: var(--color-blue-500, #3b82f6);
+  --color-border-disabled: var(--color-neutral-700, #3f3f46);
+  --color-overlay-backdrop: var(--color-black-alpha-50, rgba(0, 0, 0, 0.5));
+  --color-action-primary-default: var(--color-blue-600, #2563eb);
+  --color-action-primary-hover: var(--color-blue-700, #1d4ed8);
+  --color-action-primary-active: var(--color-blue-700, #1d4ed8);
+  --color-action-primary-disabled: var(--color-neutral-700, #3f3f46);
+  --color-action-primary-foreground: var(--color-neutral-0, #ffffff);
+  --color-action-secondary-default: var(--color-neutral-800, #27272a);
+  --color-action-secondary-hover: var(--color-neutral-700, #3f3f46);
+  --color-action-secondary-active: var(--color-neutral-600, #52525b);
+  --color-action-secondary-disabled: var(--color-neutral-800, #27272a);
+  --color-action-secondary-foreground: var(--color-neutral-50, #fafafa);
+  --color-action-danger-default: var(--color-red-600, #dc2626);
+  --color-action-danger-hover: var(--color-red-700, #b91c1c);
+  --color-action-danger-active: var(--color-red-700, #b91c1c);
+  --color-action-danger-foreground: var(--color-neutral-0, #ffffff);
+  --color-status-success-foreground: var(--color-green-100, #dcfce7);
+  --color-status-success-surface: var(--color-green-700, #15803d);
+  --color-status-success-border: var(--color-green-500, #22c55e);
+  --color-status-warning-foreground: var(--color-amber-100, #fef3c7);
+  --color-status-warning-surface: var(--color-amber-700, #b45309);
+  --color-status-warning-border: var(--color-amber-500, #f59e0b);
+  --color-status-danger-foreground: var(--color-red-100, #fee2e2);
+  --color-status-danger-surface: var(--color-red-700, #b91c1c);
+  --color-status-danger-border: var(--color-red-500, #ef4444);
+}

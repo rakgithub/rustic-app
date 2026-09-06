@@ -1,6 +1,6 @@
 
 import { fileURLToPath } from "node:url";
-import { dirname } from "node:path";
+import { dirname, resolve } from "node:path";
 
 import type { StorybookConfig } from '@storybook/react-vite';
 
@@ -16,7 +16,11 @@ const config: StorybookConfig = {
     options: {
       
       builder: {
-        viteConfigPath: 'vite.config.mts',
+        viteConfigPath: resolve(
+          dirname(fileURLToPath(import.meta.url)),
+          '..',
+          'vite.config.mts',
+        ),
       },
       
     },
@@ -38,4 +42,3 @@ export default config;
 // To customize your Vite configuration you can use the viteFinal field.
 // Check https://storybook.js.org/docs/react/builders/vite#configuration
 // and https://nx.dev/recipes/storybook/custom-builder-configs
-

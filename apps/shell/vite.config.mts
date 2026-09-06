@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { federation } from '@module-federation/vite';
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 const PORT = 5100;
 
@@ -20,6 +21,7 @@ export default defineConfig({
   preview: { port: PORT, strictPort: true },
   build: { target: 'chrome89' },
   plugins: [
+    nxViteTsPaths(),
     federation({
       name: 'shell',
       // No build-time `remotes:` block - the consumer registers them at

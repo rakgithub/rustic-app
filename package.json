@@ -11,7 +11,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:check": "drizzle-kit check",
-    "bundle:check": "node tools/scripts/check-bundle-budgets.mjs"
+    "bundle:check": "node tools/scripts/check-bundle-budgets.mjs",
+    "tokens:build": "node libs/shared/design-tokens/scripts/build-tokens.mjs"
   },
   "dependencies": {
     "@hono/node-server": "^2.1.1",
@@ -70,6 +71,7 @@
     "openapi-typescript": "^7.13.0",
     "oxlint": "^1.75.0",
     "storybook": "^10.5.0",
+    "style-dictionary": "^5.5.2",
     "testcontainers": "^12.1.0",
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",
