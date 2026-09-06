@@ -1,7 +1,7 @@
-/*
- * Replace this with your own classes
- *
- * e.g.
- * .container {
- * }
-*/
+.container {
+  background: var(--color-surface-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-sans);
+  min-height: 100%;
+  padding: var(--space-6);
+}

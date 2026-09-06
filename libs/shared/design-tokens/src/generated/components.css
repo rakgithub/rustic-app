@@ -1,0 +1,48 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+:root {
+  --button-radius: var(--radius-md, 0.5rem);
+  --button-padding-inline: var(--space-4, 1rem);
+  --button-padding-block: var(--space-2, 0.5rem);
+  --input-radius: var(--radius-md, 0.5rem);
+  --input-padding-inline: var(--space-3, 0.75rem);
+  --input-padding-block: var(--space-2, 0.5rem);
+  --card-border-width: var(--border-width-default, 1px);
+  --card-radius: var(--radius-lg, 0.75rem);
+  --card-padding: var(--space-6, 1.5rem);
+  --card-shadow: var(--shadow-sm, 0px 1px 2px 0px #0000000d);
+  --dialog-radius: var(--radius-lg, 0.75rem);
+  --dialog-padding: var(--space-6, 1.5rem);
+  --dialog-shadow: var(--shadow-md, 0px 4px 6px -1px #0000001a);
+  --button-primary-background: var(--color-action-primary-default, #2563eb);
+  --button-primary-background-hover: var(--color-action-primary-hover, #1d4ed8);
+  --button-primary-background-active: var(--color-action-primary-active, #1d4ed8);
+  --button-primary-background-disabled: var(--color-action-primary-disabled, #d4d4d8);
+  --button-primary-foreground: var(--color-action-primary-foreground, #ffffff);
+  --button-secondary-background: var(--color-action-secondary-default, #f4f4f5);
+  --button-secondary-background-hover: var(--color-action-secondary-hover, #e4e4e7);
+  --button-secondary-background-active: var(--color-action-secondary-active, #d4d4d8);
+  --button-secondary-background-disabled: var(--color-action-secondary-disabled, #f4f4f5);
+  --button-secondary-foreground: var(--color-action-secondary-foreground, #09090b);
+  --button-danger-background: var(--color-action-danger-default, #dc2626);
+  --button-danger-background-hover: var(--color-action-danger-hover, #b91c1c);
+  --button-danger-background-active: var(--color-action-danger-active, #b91c1c);
+  --button-danger-foreground: var(--color-action-danger-foreground, #ffffff);
+  --button-focus-ring: var(--color-border-focus, #2563eb);
+  --input-background: var(--color-surface-default, #ffffff);
+  --input-foreground: var(--color-text-primary, #09090b);
+  --input-placeholder: var(--color-text-muted, #71717a);
+  --input-border: var(--color-border-default, #e4e4e7);
+  --input-border-focus: var(--color-border-focus, #2563eb);
+  --input-border-disabled: var(--color-border-disabled, #e4e4e7);
+  --input-background-disabled: var(--color-surface-disabled, #f4f4f5);
+  --card-background: var(--color-surface-raised, #ffffff);
+  --card-foreground: var(--color-text-primary, #09090b);
+  --card-border: var(--color-border-default, #e4e4e7);
+  --dialog-backdrop: var(--color-overlay-backdrop, rgba(0, 0, 0, 0.5));
+  --dialog-background: var(--color-surface-raised, #ffffff);
+  --dialog-foreground: var(--color-text-primary, #09090b);
+  --dialog-border: var(--color-border-default, #e4e4e7);
+}

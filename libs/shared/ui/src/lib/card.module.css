@@ -1,0 +1,15 @@
+.card {
+  background: var(--card-background);
+  border: var(--card-border-width) solid var(--card-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  color: var(--card-foreground);
+  padding: var(--card-padding);
+}
+
+@media (forced-colors: active) {
+  .card {
+    border-color: CanvasText;
+    box-shadow: none;
+  }
+}

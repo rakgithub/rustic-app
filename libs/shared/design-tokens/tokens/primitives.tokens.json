@@ -1,0 +1,141 @@
+{
+  "$description": "Raw design values shared by every Rustic application. Components must consume semantic tokens rather than these values directly.",
+  "color": {
+    "$type": "color",
+    "neutral": {
+      "0": { "$value": "#ffffff" },
+      "50": { "$value": "#fafafa" },
+      "100": { "$value": "#f4f4f5" },
+      "200": { "$value": "#e4e4e7" },
+      "300": { "$value": "#d4d4d8" },
+      "400": { "$value": "#a1a1aa" },
+      "500": { "$value": "#71717a" },
+      "600": { "$value": "#52525b" },
+      "700": { "$value": "#3f3f46" },
+      "800": { "$value": "#27272a" },
+      "900": { "$value": "#18181b" },
+      "950": { "$value": "#09090b" }
+    },
+    "blue": {
+      "50": { "$value": "#eff6ff" },
+      "100": { "$value": "#dbeafe" },
+      "500": { "$value": "#3b82f6" },
+      "600": { "$value": "#2563eb" },
+      "700": { "$value": "#1d4ed8" }
+    },
+    "green": {
+      "50": { "$value": "#f0fdf4" },
+      "100": { "$value": "#dcfce7" },
+      "500": { "$value": "#22c55e" },
+      "600": { "$value": "#16a34a" },
+      "700": { "$value": "#15803d" }
+    },
+    "amber": {
+      "50": { "$value": "#fffbeb" },
+      "100": { "$value": "#fef3c7" },
+      "500": { "$value": "#f59e0b" },
+      "600": { "$value": "#d97706" },
+      "700": { "$value": "#b45309" }
+    },
+    "red": {
+      "50": { "$value": "#fef2f2" },
+      "100": { "$value": "#fee2e2" },
+      "500": { "$value": "#ef4444" },
+      "600": { "$value": "#dc2626" },
+      "700": { "$value": "#b91c1c" }
+    },
+    "black": {
+      "alpha-50": { "$value": "#00000080" }
+    }
+  },
+  "space": {
+    "$type": "dimension",
+    "0": { "$value": { "value": 0, "unit": "px" } },
+    "1": { "$value": { "value": 0.25, "unit": "rem" } },
+    "2": { "$value": { "value": 0.5, "unit": "rem" } },
+    "3": { "$value": { "value": 0.75, "unit": "rem" } },
+    "4": { "$value": { "value": 1, "unit": "rem" } },
+    "5": { "$value": { "value": 1.25, "unit": "rem" } },
+    "6": { "$value": { "value": 1.5, "unit": "rem" } },
+    "8": { "$value": { "value": 2, "unit": "rem" } },
+    "10": { "$value": { "value": 2.5, "unit": "rem" } },
+    "12": { "$value": { "value": 3, "unit": "rem" } },
+    "16": { "$value": { "value": 4, "unit": "rem" } }
+  },
+  "radius": {
+    "$type": "dimension",
+    "none": { "$value": { "value": 0, "unit": "px" } },
+    "sm": { "$value": { "value": 0.25, "unit": "rem" } },
+    "md": { "$value": { "value": 0.5, "unit": "rem" } },
+    "lg": { "$value": { "value": 0.75, "unit": "rem" } },
+    "xl": { "$value": { "value": 1, "unit": "rem" } },
+    "full": { "$value": { "value": 9999, "unit": "px" } }
+  },
+  "border": {
+    "width": {
+      "$type": "dimension",
+      "default": { "$value": { "value": 1, "unit": "px" } }
+    }
+  },
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "sans": {
+        "$value": ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
+      },
+      "mono": {
+        "$value": ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"]
+      }
+    },
+    "size": {
+      "$type": "dimension",
+      "xs": { "$value": { "value": 0.75, "unit": "rem" } },
+      "sm": { "$value": { "value": 0.875, "unit": "rem" } },
+      "md": { "$value": { "value": 1, "unit": "rem" } },
+      "lg": { "$value": { "value": 1.125, "unit": "rem" } },
+      "xl": { "$value": { "value": 1.25, "unit": "rem" } },
+      "2xl": { "$value": { "value": 1.5, "unit": "rem" } },
+      "3xl": { "$value": { "value": 1.875, "unit": "rem" } }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "regular": { "$value": 400 },
+      "medium": { "$value": 500 },
+      "semibold": { "$value": 600 },
+      "bold": { "$value": 700 }
+    },
+    "line-height": {
+      "$type": "number",
+      "tight": { "$value": 1.2 },
+      "normal": { "$value": 1.5 },
+      "relaxed": { "$value": 1.625 }
+    }
+  },
+  "shadow": {
+    "$type": "shadow",
+    "sm": {
+      "$value": {
+        "color": "#0000000d",
+        "offsetX": { "value": 0, "unit": "px" },
+        "offsetY": { "value": 1, "unit": "px" },
+        "blur": { "value": 2, "unit": "px" },
+        "spread": { "value": 0, "unit": "px" }
+      }
+    },
+    "md": {
+      "$value": {
+        "color": "#0000001a",
+        "offsetX": { "value": 0, "unit": "px" },
+        "offsetY": { "value": 4, "unit": "px" },
+        "blur": { "value": 6, "unit": "px" },
+        "spread": { "value": -1, "unit": "px" }
+      }
+    }
+  },
+  "duration": {
+    "$type": "duration",
+    "fast": { "$value": { "value": 150, "unit": "ms" } },
+    "normal": { "$value": { "value": 200, "unit": "ms" } },
+    "slow": { "$value": { "value": 300, "unit": "ms" } }
+  }
+}

@@ -1,7 +1,11 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import "design-tokens/theme.css";
+import { initializeTheme } from "design-tokens";
 import { App } from "./App";
 import { loadRemotes } from "./platform/load-remotes";
+
+initializeTheme();
 
 const container = document.getElementById("root");
 if (!container) throw new Error("#root element not found");

@@ -1,0 +1,71 @@
+{
+  "$description": "Semantic token values for the light theme. Names express UI purpose, while values reference primitive tokens.",
+  "color": {
+    "$type": "color",
+    "text": {
+      "primary": { "$value": "{color.neutral.950}" },
+      "secondary": { "$value": "{color.neutral.600}" },
+      "muted": { "$value": "{color.neutral.500}" },
+      "disabled": { "$value": "{color.neutral.400}" },
+      "inverse": { "$value": "{color.neutral.0}" },
+      "link": { "$value": "{color.blue.600}" }
+    },
+    "surface": {
+      "canvas": { "$value": "{color.neutral.50}" },
+      "default": { "$value": "{color.neutral.0}" },
+      "raised": { "$value": "{color.neutral.0}" },
+      "sunken": { "$value": "{color.neutral.100}" },
+      "disabled": { "$value": "{color.neutral.100}" },
+      "inverse": { "$value": "{color.neutral.950}" }
+    },
+    "border": {
+      "default": { "$value": "{color.neutral.200}" },
+      "strong": { "$value": "{color.neutral.300}" },
+      "subtle": { "$value": "{color.neutral.100}" },
+      "focus": { "$value": "{color.blue.600}" },
+      "disabled": { "$value": "{color.neutral.200}" }
+    },
+    "overlay": {
+      "backdrop": { "$value": "{color.black.alpha-50}" }
+    },
+    "action": {
+      "primary": {
+        "default": { "$value": "{color.blue.600}" },
+        "hover": { "$value": "{color.blue.700}" },
+        "active": { "$value": "{color.blue.700}" },
+        "disabled": { "$value": "{color.neutral.300}" },
+        "foreground": { "$value": "{color.neutral.0}" }
+      },
+      "secondary": {
+        "default": { "$value": "{color.neutral.100}" },
+        "hover": { "$value": "{color.neutral.200}" },
+        "active": { "$value": "{color.neutral.300}" },
+        "disabled": { "$value": "{color.neutral.100}" },
+        "foreground": { "$value": "{color.neutral.950}" }
+      },
+      "danger": {
+        "default": { "$value": "{color.red.600}" },
+        "hover": { "$value": "{color.red.700}" },
+        "active": { "$value": "{color.red.700}" },
+        "foreground": { "$value": "{color.neutral.0}" }
+      }
+    },
+    "status": {
+      "success": {
+        "foreground": { "$value": "{color.green.700}" },
+        "surface": { "$value": "{color.green.50}" },
+        "border": { "$value": "{color.green.500}" }
+      },
+      "warning": {
+        "foreground": { "$value": "{color.amber.700}" },
+        "surface": { "$value": "{color.amber.50}" },
+        "border": { "$value": "{color.amber.500}" }
+      },
+      "danger": {
+        "foreground": { "$value": "{color.red.700}" },
+        "surface": { "$value": "{color.red.50}" },
+        "border": { "$value": "{color.red.500}" }
+      }
+    }
+  }
+}
