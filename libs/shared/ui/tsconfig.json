@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "paths": {
+      "design-tokens": ["../design-tokens/src/index.ts"],
+      "design-tokens/*": ["../design-tokens/src/*"],
+      "ui/*": ["./src/*"]
+    },
     "jsx": "react-jsx",
     "allowJs": false,
     "allowSyntheticDefaultImports": true,

@@ -1,6 +1,10 @@
+packages:
+  - "apps/*"
+  - "libs/*/*"
+
 allowBuilds:
-  '@parcel/watcher': true
-  '@swc/core': true
+  "@parcel/watcher": true
+  "@swc/core": true
   cpu-features: true
   esbuild: true
   msw: true

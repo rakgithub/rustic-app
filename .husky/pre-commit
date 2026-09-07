@@ -1,1 +1,2 @@
+pnpm exec nx format:write
 pnpm exec lint-staged
