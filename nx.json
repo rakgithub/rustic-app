@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "nxCloudId": "6a9ab9813532fe66569205bf",
+  "nxCloudId": "6a9e7eaba26e765596e04dea",
   "analytics": false,
   "plugins": [
     {
@@ -45,18 +45,29 @@
   "targetDefaults": {
     "@nx/js:tsc": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["default", "^default"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "default",
+        "^default"
+      ]
     },
     "@nx/esbuild:esbuild": {
       "cache": true,
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "inputs": [
         "default",
         "^default",
         {
           "json": "{workspaceRoot}/tsconfig.json",
-          "fields": ["extends", "files", "include"]
+          "fields": [
+            "extends",
+            "files",
+            "include"
+          ]
         },
         "{workspaceRoot}/pnpm-workspace.yaml",
         {
