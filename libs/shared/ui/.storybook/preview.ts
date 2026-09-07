@@ -1,6 +1,7 @@
 import type { Preview } from "@storybook/react-vite";
 
 import "design-tokens/theme.css";
+import "../src/shadcn.css";
 import { resolveTheme, type ThemePreference } from "design-tokens";
 
 const preview: Preview = {

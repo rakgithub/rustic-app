@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@import "shadcn/tailwind.css";
+
+/* shadcn utilities read these names; our generated semantic tokens own values. */
+@custom-variant dark (&:is([data-theme="dark"] *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+}
+
+:root {
+  font-family: var(--font-family-sans);
+  --background: var(--color-surface-canvas);
+  --foreground: var(--color-text-primary);
+  --card: var(--color-surface-raised);
+  --card-foreground: var(--color-text-primary);
+  --popover: var(--color-surface-overlay);
+  --popover-foreground: var(--color-text-primary);
+  --primary: var(--color-action-primary-default);
+  --primary-foreground: var(--color-action-primary-foreground);
+  --secondary: var(--color-action-secondary-default);
+  --secondary-foreground: var(--color-action-secondary-foreground);
+  --muted: var(--color-surface-sunken);
+  --muted-foreground: var(--color-text-secondary);
+  --destructive: var(--color-action-danger-default);
+  --destructive-foreground: var(--color-action-danger-foreground);
+  --border: var(--color-border-default);
+  --input: var(--color-border-default);
+  --ring: var(--color-border-focus);
+  --radius: var(--radius-md);
+}

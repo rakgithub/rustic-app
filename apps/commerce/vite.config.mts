@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { federation } from '@module-federation/vite';
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 // Port deliberately avoids 5000 (macOS AirTunes binds it on 0.0.0.0, leading
 // to silent EADDRINUSE on 127.0.0.1). Override `--port` only if 5000+ is free.
@@ -21,8 +20,8 @@ export default defineConfig({
   },
   preview: { port: PORT, strictPort: true, cors: true },
   build: { target: 'chrome89' },
+  resolve: { tsconfigPaths: true },
   plugins: [
-    nxViteTsPaths(),
     federation({
       name: 'commerce',
       filename: 'remoteEntry.js',

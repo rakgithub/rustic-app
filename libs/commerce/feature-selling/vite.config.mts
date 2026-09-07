@@ -1,15 +1,15 @@
 
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
 export default defineConfig(() => ({
     root: import.meta.dirname,
     cacheDir: '../../../node_modules/.vite/libs/commerce/feature-selling',
-    plugins: [react(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md']),],
+    resolve: { tsconfigPaths: true },
+    plugins: [react(), nxCopyAssetsPlugin(['*.md']),],
     // Uncomment this if you are using workers.
     // worker: {
-    //   plugins: () => [ nxViteTsPaths() ],
+    //   plugins: () => [],
     // },
     test: {
         'name': 'feature-selling',
