@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { federation } from "@module-federation/vite";
+import tailwindcss from "@tailwindcss/vite";
 
 const PORT = 5100;
 
@@ -35,5 +36,6 @@ export default defineConfig({
       },
     }),
     react(),
+    tailwindcss(),
   ],
 });

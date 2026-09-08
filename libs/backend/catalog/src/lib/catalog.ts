@@ -1,19 +1,21 @@
-import { and, asc, count, desc, eq, max } from 'drizzle-orm';
-import { z } from 'zod';
-import type { DatabaseConnection } from 'database';
-import { productImages, products } from 'database';
+import { and, asc, count, desc, eq, max } from "drizzle-orm";
+import { z } from "zod";
+import type { DatabaseConnection } from "database";
+import { productImages, products } from "database";
 
 export const productInputSchema = z.object({
   title: z.string().trim().min(3).max(120),
   description: z.string().trim().min(1).max(5000),
+  brand: z.string().trim().min(1).max(80).optional(),
+  colour: z.string().trim().min(1).max(80).optional(),
+  category: z.string().trim().min(1).max(80).optional(),
   priceMinor: z.number().int().positive().max(100_000_000),
   currency: z.string().regex(/^[A-Z]{3}$/),
 });
 
-export const productPatchSchema = productInputSchema.partial().refine(
-  (value) => Object.keys(value).length > 0,
-  'At least one product field is required',
-);
+export const productPatchSchema = productInputSchema
+  .partial()
+  .refine((value) => Object.keys(value).length > 0, "At least one product field is required");
 
 export type ProductInput = z.infer<typeof productInputSchema>;
 export type ProductPatch = z.infer<typeof productPatchSchema>;
@@ -21,27 +23,32 @@ export type Product = typeof products.$inferSelect;
 export type ProductImage = typeof productImages.$inferSelect;
 
 export async function createProduct(
-  db: DatabaseConnection['db'],
+  db: DatabaseConnection["db"],
   ownerId: string,
   input: ProductInput,
 ): Promise<Product> {
   const [product] = await db
     .insert(products)
-    .values({ ...input, ownerId, status: 'draft' })
+    .values({ ...input, ownerId, status: "draft" })
     .returning();
   return product;
 }
 
 export async function listPublishedProducts(
-  db: DatabaseConnection['db'],
+  db: DatabaseConnection["db"],
   page: number,
   pageSize: number,
-): Promise<{ items: Array<Product & { images: ProductImage[] }>; page: number; pageSize: number; hasNextPage: boolean }> {
+): Promise<{
+  items: Array<Product & { images: ProductImage[] }>;
+  page: number;
+  pageSize: number;
+  hasNextPage: boolean;
+}> {
   const offset = (page - 1) * pageSize;
   const rows = await db
     .select()
     .from(products)
-    .where(eq(products.status, 'published'))
+    .where(eq(products.status, "published"))
     .orderBy(desc(products.createdAt), desc(products.id))
     .limit(pageSize + 1)
     .offset(offset);
@@ -63,13 +70,13 @@ export async function listPublishedProducts(
 }
 
 export async function getPublishedProduct(
-  db: DatabaseConnection['db'],
+  db: DatabaseConnection["db"],
   productId: string,
 ): Promise<(Product & { images: ProductImage[] }) | null> {
   const [product] = await db
     .select()
     .from(products)
-    .where(and(eq(products.id, productId), eq(products.status, 'published')))
+    .where(and(eq(products.id, productId), eq(products.status, "published")))
     .limit(1);
 
   if (!product) return null;
@@ -84,7 +91,7 @@ export async function getPublishedProduct(
 }
 
 export async function getOwnedProduct(
-  db: DatabaseConnection['db'],
+  db: DatabaseConnection["db"],
   ownerId: string,
   productId: string,
 ): Promise<Product | null> {
@@ -97,7 +104,7 @@ export async function getOwnedProduct(
 }
 
 export async function listOwnedProducts(
-  db: DatabaseConnection['db'],
+  db: DatabaseConnection["db"],
   ownerId: string,
 ): Promise<Array<Product & { images: ProductImage[] }>> {
   const rows = await db
@@ -119,7 +126,7 @@ export async function listOwnedProducts(
 }
 
 export async function updateOwnedProduct(
-  db: DatabaseConnection['db'],
+  db: DatabaseConnection["db"],
   ownerId: string,
   productId: string,
   input: ProductPatch,
@@ -133,7 +140,7 @@ export async function updateOwnedProduct(
 }
 
 export async function deleteOwnedProduct(
-  db: DatabaseConnection['db'],
+  db: DatabaseConnection["db"],
   ownerId: string,
   productId: string,
 ): Promise<boolean> {
@@ -145,7 +152,7 @@ export async function deleteOwnedProduct(
 }
 
 export async function publishOwnedProduct(
-  db: DatabaseConnection['db'],
+  db: DatabaseConnection["db"],
   ownerId: string,
   productId: string,
 ): Promise<{ product: Product; images: ProductImage[] } | null> {
@@ -162,19 +169,19 @@ export async function publishOwnedProduct(
     .where(eq(productImages.productId, productId));
 
   if (
-    product.status !== 'draft' ||
+    product.status !== "draft" ||
     product.title.trim().length < 3 ||
     product.description.trim().length === 0 ||
     product.priceMinor <= 0 ||
     !/^[A-Z]{3}$/.test(product.currency) ||
     images.length === 0
   ) {
-    throw new Error('Product requires valid fields and at least one image');
+    throw new Error("Product requires valid fields and at least one image");
   }
 
   const [published] = await db
     .update(products)
-    .set({ status: 'published', updatedAt: new Date() })
+    .set({ status: "published", updatedAt: new Date() })
     .where(and(eq(products.id, productId), eq(products.ownerId, ownerId)))
     .returning();
 
@@ -182,10 +189,10 @@ export async function publishOwnedProduct(
 }
 
 export async function addOwnedProductImage(
-  db: DatabaseConnection['db'],
+  db: DatabaseConnection["db"],
   ownerId: string,
   productId: string,
-  image: Omit<typeof productImages.$inferInsert, 'productId'>,
+  image: Omit<typeof productImages.$inferInsert, "productId">,
 ): Promise<ProductImage | null> {
   const [product] = await db
     .select({ id: products.id })
@@ -208,7 +215,7 @@ export async function addOwnedProductImage(
 }
 
 export async function countProductImages(
-  db: DatabaseConnection['db'],
+  db: DatabaseConnection["db"],
   productId: string,
 ): Promise<number> {
   const [result] = await db
@@ -220,5 +227,5 @@ export async function countProductImages(
 
 // Kept for compatibility with the generated library smoke test.
 export function catalog(): string {
-  return 'catalog';
+  return "catalog";
 }

@@ -1,6 +1,8 @@
 import { defineConfig } from "vite";
+import { fileURLToPath, URL } from "node:url";
 import react from "@vitejs/plugin-react";
 import { federation } from "@module-federation/vite";
+import tailwindcss from "@tailwindcss/vite";
 
 // Port deliberately avoids 5000 (macOS AirTunes binds it on 0.0.0.0, leading
 // to silent EADDRINUSE on 127.0.0.1). Override `--port` only if 5000+ is free.
@@ -20,7 +22,36 @@ export default defineConfig({
   },
   preview: { port: PORT, strictPort: true, cors: true },
   build: { target: "chrome89" },
-  resolve: { tsconfigPaths: true },
+  resolve: {
+    alias: [
+      {
+        find: "ui/shadcn.css",
+        replacement: fileURLToPath(new URL("../../libs/shared/ui/src/shadcn.css", import.meta.url)),
+      },
+      {
+        find: /^ui$/,
+        replacement: fileURLToPath(new URL("../../libs/shared/ui/src/index.ts", import.meta.url)),
+      },
+      {
+        find: /^api-client$/,
+        replacement: fileURLToPath(
+          new URL("../../libs/shared/api-client/src/index.ts", import.meta.url),
+        ),
+      },
+      {
+        find: /^product-overview$/,
+        replacement: fileURLToPath(
+          new URL("../../libs/commerce/product-overview/product-overview.tsx", import.meta.url),
+        ),
+      },
+      {
+        find: /^add-product$/,
+        replacement: fileURLToPath(
+          new URL("../../libs/commerce/add-product/add-product.tsx", import.meta.url),
+        ),
+      },
+    ],
+  },
   plugins: [
     federation({
       name: "commerce",
@@ -38,5 +69,6 @@ export default defineConfig({
       },
     }),
     react(),
+    tailwindcss(),
   ],
 });

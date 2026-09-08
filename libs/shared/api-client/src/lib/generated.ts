@@ -1,7 +1,7 @@
 /** Generated from the Rustic API OpenAPI document. */
 export interface components {
   schemas: {
-    HealthResponse: { status: 'ok' };
+    HealthResponse: { status: "ok" };
     ProductImage: {
       id: string;
       productId: string;
@@ -17,6 +17,9 @@ export interface components {
       ownerId: string;
       title: string;
       description: string;
+      brand: string | null;
+      colour: string | null;
+      category: string | null;
       priceMinor: number;
       currency: string;
       status: string;
@@ -26,13 +29,18 @@ export interface components {
     ProductInput: {
       title: string;
       description: string;
+      brand?: string;
+      colour?: string;
+      category?: string;
       priceMinor: number;
       currency: string;
     };
-    ProductPatch: Partial<components['schemas']['ProductInput']>;
-    ProductWithImages: components['schemas']['Product'] & { images: components['schemas']['ProductImage'][] };
+    ProductPatch: Partial<components["schemas"]["ProductInput"]>;
+    ProductWithImages: components["schemas"]["Product"] & {
+      images: components["schemas"]["ProductImage"][];
+    };
     ProductList: {
-      items: components['schemas']['ProductWithImages'][];
+      items: components["schemas"]["ProductWithImages"][];
       page: number;
       pageSize: number;
       hasNextPage: boolean;
@@ -65,96 +73,144 @@ export interface components {
   };
 }
 
-type Product = components['schemas']['Product'];
-type ProductWithImages = components['schemas']['ProductWithImages'];
-type ProductList = components['schemas']['ProductList'];
+type Product = components["schemas"]["Product"];
+type ProductWithImages = components["schemas"]["ProductWithImages"];
+type ProductList = components["schemas"]["ProductList"];
 type ErrorResponse = { error: string; details?: unknown };
 type ProductId = { productId: string };
-type UserHeader = { 'x-user-id': string };
+type UserHeader = { "x-user-id": string };
 
 export interface paths {
-  '/health': { get: { responses: { 200: { content: { 'application/json': components['schemas']['HealthResponse'] } } } } };
-  '/products': {
+  "/health": {
+    get: {
+      responses: {
+        200: { content: { "application/json": components["schemas"]["HealthResponse"] } };
+      };
+    };
+  };
+  "/products": {
     get: {
       parameters: { query?: { page?: number; pageSize?: number } };
-      responses: { 200: { content: { 'application/json': ProductList } } };
+      responses: { 200: { content: { "application/json": ProductList } } };
     };
     post: {
       parameters: { header: UserHeader };
-      requestBody: { content: { 'application/json': components['schemas']['ProductInput'] } };
-      responses: { 201: { content: { 'application/json': Product } }; 400: { content: { 'application/json': ErrorResponse } } };
+      requestBody: { content: { "application/json": components["schemas"]["ProductInput"] } };
+      responses: {
+        201: { content: { "application/json": Product } };
+        400: { content: { "application/json": ErrorResponse } };
+      };
     };
   };
-  '/products/{productId}': {
+  "/products/{productId}": {
     get: {
       parameters: { path: ProductId };
-      responses: { 200: { content: { 'application/json': ProductWithImages } }; 404: { content: { 'application/json': ErrorResponse } } };
+      responses: {
+        200: { content: { "application/json": ProductWithImages } };
+        404: { content: { "application/json": ErrorResponse } };
+      };
     };
     patch: {
       parameters: { path: ProductId; header: UserHeader };
-      requestBody: { content: { 'application/json': components['schemas']['ProductPatch'] } };
-      responses: { 200: { content: { 'application/json': Product } }; 404: { content: { 'application/json': ErrorResponse } } };
+      requestBody: { content: { "application/json": components["schemas"]["ProductPatch"] } };
+      responses: {
+        200: { content: { "application/json": Product } };
+        404: { content: { "application/json": ErrorResponse } };
+      };
     };
     delete: {
       parameters: { path: ProductId; header: UserHeader };
-      responses: { 204: { content: never }; 404: { content: { 'application/json': ErrorResponse } } };
+      responses: {
+        204: { content: never };
+        404: { content: { "application/json": ErrorResponse } };
+      };
     };
   };
-  '/products/{productId}/publish': {
+  "/products/{productId}/publish": {
     post: {
       parameters: { path: ProductId; header: UserHeader };
-      responses: { 200: { content: { 'application/json': { product: Product; images: components['schemas']['ProductImage'][] } } }; 400: { content: { 'application/json': ErrorResponse } } };
+      responses: {
+        200: {
+          content: {
+            "application/json": {
+              product: Product;
+              images: components["schemas"]["ProductImage"][];
+            };
+          };
+        };
+        400: { content: { "application/json": ErrorResponse } };
+      };
     };
   };
-  '/me/products': {
+  "/me/products": {
     get: {
       parameters: { header: UserHeader };
-      responses: { 200: { content: { 'application/json': ProductWithImages[] } } };
+      responses: { 200: { content: { "application/json": ProductWithImages[] } } };
     };
   };
-  '/uploads/product-image-token': {
+  "/uploads/product-image-token": {
     post: {
       parameters: { header: UserHeader };
-      requestBody: { content: { 'application/json': { type: 'blob.generate-client-token'; payload: { pathname: string; multipart?: boolean; clientPayload?: string } } } };
-      responses: { 200: { content: { 'application/json': Record<string, unknown> } }; 400: { content: { 'application/json': ErrorResponse } } };
+      requestBody: {
+        content: {
+          "application/json": {
+            type: "blob.generate-client-token";
+            payload: { pathname: string; multipart?: boolean; clientPayload?: string };
+          };
+        };
+      };
+      responses: {
+        200: { content: { "application/json": Record<string, unknown> } };
+        400: { content: { "application/json": ErrorResponse } };
+      };
     };
   };
-  '/wallet': {
+  "/wallet": {
     get: {
       parameters: { header: UserHeader; query?: { currency?: string } };
-      responses: { 200: { content: { 'application/json': components['schemas']['Wallet'] | null } } };
+      responses: {
+        200: { content: { "application/json": components["schemas"]["Wallet"] | null } };
+      };
     };
   };
-  '/wallet/transactions': {
+  "/wallet/transactions": {
     get: {
       parameters: { header: UserHeader; query?: { currency?: string } };
-      responses: { 200: { content: { 'application/json': components['schemas']['WalletTransaction'][] } } };
+      responses: {
+        200: { content: { "application/json": components["schemas"]["WalletTransaction"][] } };
+      };
     };
   };
-  '/dev/wallet/top-up': {
+  "/dev/wallet/top-up": {
     post: {
       parameters: { header: UserHeader };
-      requestBody: { content: { 'application/json': { amountMinor: number; currency?: string } } };
-      responses: { 200: { content: { 'application/json': components['schemas']['Wallet'] } } };
+      requestBody: { content: { "application/json": { amountMinor: number; currency?: string } } };
+      responses: { 200: { content: { "application/json": components["schemas"]["Wallet"] } } };
     };
   };
-  '/products/{productId}/purchase': {
+  "/products/{productId}/purchase": {
     post: {
       parameters: { path: ProductId; header: UserHeader };
-      requestBody: { content: { 'application/json': { idempotencyKey: string } } };
-      responses: { 201: { content: { 'application/json': components['schemas']['Order'] } }; 409: { content: { 'application/json': ErrorResponse } } };
+      requestBody: { content: { "application/json": { idempotencyKey: string } } };
+      responses: {
+        201: { content: { "application/json": components["schemas"]["Order"] } };
+        409: { content: { "application/json": ErrorResponse } };
+      };
     };
   };
-  '/orders': {
+  "/orders": {
     get: {
       parameters: { header: UserHeader };
-      responses: { 200: { content: { 'application/json': components['schemas']['Order'][] } } };
+      responses: { 200: { content: { "application/json": components["schemas"]["Order"][] } } };
     };
   };
-  '/orders/{orderId}': {
+  "/orders/{orderId}": {
     get: {
       parameters: { path: { orderId: string }; header: UserHeader };
-      responses: { 200: { content: { 'application/json': components['schemas']['Order'] } }; 404: { content: { 'application/json': ErrorResponse } } };
+      responses: {
+        200: { content: { "application/json": components["schemas"]["Order"] } };
+        404: { content: { "application/json": ErrorResponse } };
+      };
     };
   };
 }

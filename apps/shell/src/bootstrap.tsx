@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "design-tokens/theme.css";
+import "ui/shadcn.css";
 import { initializeTheme } from "design-tokens";
 import { App } from "./App";
 import { loadRemotes } from "./platform/load-remotes";
