@@ -1,1 +1,0 @@
-CREATE INDEX "product_images_product_id_position_idx" ON "product_images" USING btree ("product_id","position");

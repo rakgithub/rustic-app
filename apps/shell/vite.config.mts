@@ -6,17 +6,15 @@ import tailwindcss from "@tailwindcss/vite";
 const PORT = 5100;
 
 export default defineConfig({
+  define: {
+    __RUSTIC_API_BASE_URL__: JSON.stringify(
+      process.env.VITE_API_BASE_URL ?? "http://localhost:3006",
+    ),
+  },
   server: {
     port: PORT,
     strictPort: true,
     host: "127.0.0.1",
-    proxy: {
-      "/api": {
-        target: "http://127.0.0.1:3333",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-    },
   },
   preview: { port: PORT, strictPort: true },
   build: { target: "chrome89" },

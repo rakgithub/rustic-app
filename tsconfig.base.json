@@ -28,12 +28,7 @@
       "add-product": ["./libs/commerce/add-product/add-product.tsx"],
       "product-list": ["./libs/commerce/product-list/product-list.tsx"],
       "product-checkout": ["./libs/commerce/product-checkout/product-checkout.tsx"],
-      "product-overview": ["./libs/commerce/product-overview/product-overview.tsx"],
-      "database": ["./libs/backend/database/src/index.ts"],
-      "auth": ["./libs/backend/auth/src/index.ts"],
-      "catalog": ["./libs/backend/catalog/src/index.ts"],
-      "orders": ["./libs/backend/orders/src/index.ts"],
-      "wallet": ["./libs/backend/wallet/src/index.ts"]
+      "product-overview": ["./libs/commerce/product-overview/product-overview.tsx"]
     }
   },
   "exclude": ["node_modules", "tmp"]

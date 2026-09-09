@@ -2,16 +2,10 @@ import { spawnSync } from "node:child_process";
 
 const configs = [
   "apps/account/tsconfig.json",
-  "apps/api-dev/tsconfig.app.json",
   "apps/commerce/tsconfig.json",
   "apps/shell/tsconfig.json",
   "libs/account/data-access/tsconfig.lib.json",
   "libs/account/feature-auth/tsconfig.lib.json",
-  "libs/backend/auth/tsconfig.lib.json",
-  "libs/backend/catalog/tsconfig.lib.json",
-  "libs/backend/database/tsconfig.lib.json",
-  "libs/backend/orders/tsconfig.lib.json",
-  "libs/backend/wallet/tsconfig.lib.json",
   "libs/shared/api-client/tsconfig.lib.json",
   "libs/shared/config/tsconfig.lib.json",
   "libs/shared/contracts/tsconfig.lib.json",
