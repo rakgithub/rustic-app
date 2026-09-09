@@ -1,0 +1,106 @@
+.screen {
+  max-width: 42rem;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  background: var(--card-background);
+  box-shadow: var(--card-shadow);
+}
+.heading {
+  margin-bottom: 2rem;
+}
+.heading h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+.heading p {
+  margin: 0.5rem 0 0;
+  color: var(--color-text-secondary);
+}
+.eyebrow {
+  margin: 0 !important;
+  color: var(--color-text-muted) !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.form {
+  display: grid;
+  gap: 1.25rem;
+}
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.field {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.field em {
+  color: var(--color-text-muted);
+  font-style: normal;
+  font-weight: 400;
+}
+.textarea,
+.select {
+  width: 100%;
+  border: 1px solid var(--input-border);
+  border-radius: var(--input-radius);
+  background: var(--input-background);
+  color: var(--input-foreground);
+  font: inherit;
+  outline: none;
+}
+.textarea {
+  min-height: 8rem;
+  padding: var(--input-padding-block) var(--input-padding-inline);
+  resize: vertical;
+}
+.select {
+  min-height: 2.5rem;
+  padding: 0 var(--input-padding-inline);
+}
+.textarea:focus-visible,
+.select:focus-visible {
+  border-color: var(--input-border-focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--input-border-focus) 25%, transparent);
+}
+.price {
+  position: relative;
+}
+.price > span {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  pointer-events: none;
+}
+.price input {
+  padding-right: 3.5rem;
+}
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.25rem;
+}
+.status {
+  margin: 1rem 0 0;
+  color: var(--color-text-secondary);
+}
+@media (max-width: 40rem) {
+  .screen {
+    margin: 1rem;
+    padding: 1.25rem;
+  }
+  .row {
+    grid-template-columns: 1fr;
+  }
+}

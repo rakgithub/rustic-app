@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "shadcn/tailwind.css";
 
+@source "./components";
+
 /* shadcn utilities read these names; our generated semantic tokens own values. */
 @custom-variant dark (&:is([data-theme="dark"] *));
 

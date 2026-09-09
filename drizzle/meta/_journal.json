@@ -22,6 +22,13 @@
       "when": 1788601707842,
       "tag": "0002_stiff_odin",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1788780000000,
+      "tag": "0003_product_details",
+      "breakpoints": true
     }
   ]
 }

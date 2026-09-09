@@ -6,22 +6,16 @@
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
         "outputPath": "dist/apps/api-dev",
-        "format": [
-          "esm"
-        ],
-        "bundle": false,
+        "format": ["esm"],
+        "bundle": true,
         "main": "apps/api-dev/src/main.ts",
         "tsConfig": "apps/api-dev/tsconfig.app.json",
-        "assets": [
-          "apps/api-dev/src/assets"
-        ],
+        "assets": ["apps/api-dev/src/assets"],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
@@ -43,9 +37,7 @@
       }
     },
     "prune-lockfile": {
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "cache": true,
       "executor": "@nx/js:prune-lockfile",
       "inputs": [
@@ -69,32 +61,23 @@
       }
     },
     "copy-workspace-modules": {
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "cache": true,
-      "outputs": [
-        "{workspaceRoot}/dist/apps/api-dev/workspace_modules"
-      ],
+      "outputs": ["{workspaceRoot}/dist/apps/api-dev/workspace_modules"],
       "executor": "@nx/js:copy-workspace-modules",
       "options": {
         "buildTarget": "build"
       }
     },
     "prune": {
-      "dependsOn": [
-        "prune-lockfile",
-        "copy-workspace-modules"
-      ],
+      "dependsOn": ["prune-lockfile", "copy-workspace-modules"],
       "executor": "nx:noop"
     },
     "serve": {
       "continuous": true,
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
         "buildTarget": "api-dev:build",
         "runBuildTargetDependencies": false
@@ -109,8 +92,5 @@
       }
     }
   },
-  "tags": [
-    "scope:backend",
-    "type:app"
-  ]
+  "tags": ["scope:backend", "type:app"]
 }
