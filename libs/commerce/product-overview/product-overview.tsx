@@ -1,6 +1,6 @@
 import { Button } from "ui";
 import { useNavigate } from "react-router-dom";
-import ProductList from "product-list";
+import { ProductList } from "product-list";
 
 function ProductOverview() {
   const navigate = useNavigate();

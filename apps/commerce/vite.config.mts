@@ -9,6 +9,11 @@ import tailwindcss from "@tailwindcss/vite";
 const PORT = 5102;
 
 export default defineConfig({
+  define: {
+    __RUSTIC_API_BASE_URL__: JSON.stringify(
+      process.env.VITE_API_BASE_URL ?? "http://localhost:3006",
+    ),
+  },
   server: {
     port: PORT,
     strictPort: true,
@@ -42,6 +47,12 @@ export default defineConfig({
         find: /^product-overview$/,
         replacement: fileURLToPath(
           new URL("../../libs/commerce/product-overview/product-overview.tsx", import.meta.url),
+        ),
+      },
+      {
+        find: /^product-list$/,
+        replacement: fileURLToPath(
+          new URL("../../libs/commerce/product-list/product-list.tsx", import.meta.url),
         ),
       },
       {

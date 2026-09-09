@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { upload } from "@vercel/blob/client";
-import { apiClient } from "api-client";
+import { apiClient, apiUrl } from "api-client";
 import { Button, Input } from "ui";
 import styles from "./add-product.module.css";
 
@@ -50,7 +50,7 @@ export function AddProduct() {
       await upload(`products/${id}/${file.name}`, file, {
         access: "public",
         contentType: file.type,
-        handleUploadUrl: "/api/uploads/product-image-token",
+        handleUploadUrl: apiUrl("uploads/product-image-token"),
         headers: { "x-user-id": userId() },
       });
       const { error } = await apiClient.POST("/products/{productId}/publish", {

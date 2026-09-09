@@ -7,6 +7,11 @@ import { federation } from "@module-federation/vite";
 const PORT = 5101;
 
 export default defineConfig({
+  define: {
+    __RUSTIC_API_BASE_URL__: JSON.stringify(
+      process.env.VITE_API_BASE_URL ?? "http://localhost:3006",
+    ),
+  },
   server: {
     port: PORT,
     strictPort: true,
