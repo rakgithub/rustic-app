@@ -245,8 +245,8 @@ importers:
         specifier: ^7.14.5
         version: 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
       '@module-federation/vite':
-        specifier: ^1.15.5
-        version: 1.21.3(typescript@6.0.3)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.23.13)(yaml@2.9.0))
+        specifier: ^1.21.5
+        version: 1.21.5(typescript@6.0.3)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.23.13)(yaml@2.9.0))
       '@nx/devkit':
         specifier: 23.2.0
         version: 23.2.0(nx@23.2.0(@swc/core@1.16.2(@swc/helpers@0.5.23)))
@@ -390,8 +390,8 @@ importers:
         version: 19.2.8(react@19.2.8)
     devDependencies:
       '@module-federation/vite':
-        specifier: ^1.15.5
-        version: 1.21.3(typescript@6.0.3)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.23.13)(yaml@2.9.0))
+        specifier: ^1.21.5
+        version: 1.21.5(typescript@6.0.3)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.23.13)(yaml@2.9.0))
       '@types/react':
         specifier: ^19.0.0
         version: 19.2.18
@@ -418,8 +418,8 @@ importers:
         version: 19.2.8(react@19.2.8)
     devDependencies:
       '@module-federation/vite':
-        specifier: ^1.15.5
-        version: 1.21.3(typescript@6.0.3)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.23.13)(yaml@2.9.0))
+        specifier: ^1.21.5
+        version: 1.21.5(typescript@6.0.3)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.23.13)(yaml@2.9.0))
       '@types/react':
         specifier: ^19.0.0
         version: 19.2.18
@@ -449,8 +449,8 @@ importers:
         version: 19.2.8(react@19.2.8)
     devDependencies:
       '@module-federation/vite':
-        specifier: ^1.15.5
-        version: 1.21.3(typescript@6.0.3)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.23.13)(yaml@2.9.0))
+        specifier: ^1.21.5
+        version: 1.21.5(typescript@6.0.3)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.23.13)(yaml@2.9.0))
       '@types/react':
         specifier: ^19.0.0
         version: 19.2.18
@@ -2214,8 +2214,8 @@ packages:
   '@module-federation/third-party-dts-extractor@2.9.0':
     resolution: {integrity: sha512-R1Xuqnqzw6wQxWV3yU9fX1FydXAeZF2TNVFAVo1N1oLBA2j5y7aUO/Fc3VSNgd9/gxMzJgTVBdA+nMiD2SFCgg==}
 
-  '@module-federation/vite@1.21.3':
-    resolution: {integrity: sha512-bgkw35uAApfR7Kedrmm3eelCIe4onIo+BHqCi11dCMuDBffI+fIJ5lWssipU/RmO6oLJ5LXtpuX5+fF6mMlRNw==}
+  '@module-federation/vite@1.21.5':
+    resolution: {integrity: sha512-AFuP1iAyZE2vPUyg2HTV34+KMqH+934bH4jTSrcdeJp+p5UrChmkpcmRee0qG5LziNhklv2eNh6i+qcL69N8Dg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       vite: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
@@ -11194,7 +11194,7 @@ snapshots:
 
   '@module-federation/third-party-dts-extractor@2.9.0': {}
 
-  '@module-federation/vite@1.21.3(typescript@6.0.3)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.23.13)(yaml@2.9.0))':
+  '@module-federation/vite@1.21.5(typescript@6.0.3)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.23.13)(yaml@2.9.0))':
     dependencies:
       '@module-federation/dts-plugin': 2.9.0(typescript@6.0.3)
       '@module-federation/runtime': 2.9.0
