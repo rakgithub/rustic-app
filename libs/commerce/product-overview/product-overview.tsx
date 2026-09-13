@@ -6,7 +6,7 @@ function ProductOverview() {
 
   return (
     <section>
-      <ProductList onAddProduct={() => navigate("/commerce/add-product")} />
+      <ProductList />
     </section>
   );
 }
