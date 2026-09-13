@@ -28,7 +28,9 @@
       "add-product": ["./libs/commerce/add-product/add-product.tsx"],
       "product-list": ["./libs/commerce/product-list/product-list.tsx"],
       "product-checkout": ["./libs/commerce/product-checkout/product-checkout.tsx"],
-      "product-overview": ["./libs/commerce/product-overview/product-overview.tsx"]
+      "product-overview": ["./libs/commerce/product-overview/product-overview.tsx"],
+      "product-card": ["./libs/commerce/product-card/product-card.tsx"],
+      "product-api": ["./libs/commerce/product-api/product-api.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

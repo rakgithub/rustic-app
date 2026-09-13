@@ -2,16 +2,12 @@ import { useEffect, useState } from "react";
 import { apiClient } from "api-client";
 import { Search } from "lucide-react";
 import { Button, Input } from "ui";
-import { ProductCard, type ProductCardProduct } from "../product-card/product-card";
+import { ProductCard, type ProductCardProduct } from "product-card";
 import styles from "./product-list.module.css";
 
 type LoadingState = "loading" | "ready" | "empty" | "error";
 
-type ProductListProps = {
-  onAddProduct?: () => void;
-};
-
-export function ProductList({ onAddProduct }: ProductListProps) {
+export function ProductList() {
   const [items, setItems] = useState<ProductCardProduct[]>([]);
   const [state, setState] = useState<LoadingState>("loading");
 
@@ -63,9 +59,6 @@ export function ProductList({ onAddProduct }: ProductListProps) {
 
   return (
     <section className={styles.screen} aria-label="Product list">
-      {/* <header className={styles.heading}>
-        {onAddProduct && <Button variant="default" onClick={onAddProduct}>Add a product</Button>}
-      </header> */}
       <div className={styles.search}>
         <Input
           aria-label="Search products"

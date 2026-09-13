@@ -1,0 +1,8 @@
+{
+  "name": "product-api",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/commerce/product-api",
+  "projectType": "library",
+  "tags": ["scope:commerce", "type:data-access"],
+  "targets": {}
+}

@@ -3,7 +3,7 @@ import { upload } from "@vercel/blob/client";
 import { apiClient, apiUrl } from "api-client";
 import { Button, Input } from "ui";
 import styles from "./add-product.module.css";
-import { createProduct, type CreateProductInput } from "../product-api/product-api";
+import { createProduct, type CreateProductInput } from "product-api";
 
 const userId = () => localStorage.getItem("rustic.userId") ?? "local-user";
 
