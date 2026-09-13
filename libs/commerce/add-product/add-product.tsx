@@ -3,6 +3,7 @@ import { upload } from "@vercel/blob/client";
 import { apiClient, apiUrl } from "api-client";
 import { Button, Input } from "ui";
 import styles from "./add-product.module.css";
+import { createProduct, type CreateProductInput } from "product-api";
 
 const userId = () => localStorage.getItem("rustic.userId") ?? "local-user";
 
@@ -11,22 +12,21 @@ export function AddProduct() {
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
 
-  async function createDraft(form: HTMLFormElement) {
+  async function createDraft(form: HTMLFormElement): Promise<void> {
     const values = new FormData(form);
+    const input: CreateProductInput = {
+      userId: userId(),
+      title: String(values.get("title") ?? ""),
+      description: String(values.get("description") ?? ""),
+      brand: String(values.get("brand") ?? "").trim() || undefined,
+      colour: String(values.get("colour") ?? "").trim() || undefined,
+      category: String(values.get("category") ?? "").trim() || undefined,
+      priceMinor: Math.round(Number(values.get("price")) * 100),
+      currency: "EUR",
+    };
     setBusy(true);
     setStatus("Creating draft…");
-    const { data, error } = await apiClient.POST("/products", {
-      params: { header: { "x-user-id": userId() } },
-      body: {
-        title: String(values.get("title") ?? ""),
-        description: String(values.get("description") ?? ""),
-        brand: String(values.get("brand") ?? "").trim() || undefined,
-        colour: String(values.get("colour") ?? "").trim() || undefined,
-        category: String(values.get("category") ?? "").trim() || undefined,
-        priceMinor: Math.round(Number(values.get("price")) * 100),
-        currency: "EUR",
-      },
-    });
+    const { data, error } = await createProduct(input);
     if (error || !data) {
       setStatus("Could not create the draft. Check the fields and retry.");
       setBusy(false);
@@ -52,6 +52,9 @@ export function AddProduct() {
         contentType: file.type,
         handleUploadUrl: apiUrl("uploads/product-image-token"),
         headers: { "x-user-id": userId() },
+        // The upload-token endpoint turns this into the trusted callback payload
+        // used to create the product_images database record after upload.
+        clientPayload: JSON.stringify({ productId: id }),
       });
       const { error } = await apiClient.POST("/products/{productId}/publish", {
         params: { path: { productId: id }, header: { "x-user-id": userId() } },

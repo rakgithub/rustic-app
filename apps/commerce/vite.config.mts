@@ -28,6 +28,7 @@ export default defineConfig({
   preview: { port: PORT, strictPort: true, cors: true },
   build: { target: "chrome89" },
   resolve: {
+    tsconfigPaths: true,
     alias: [
       {
         find: "ui/shadcn.css",

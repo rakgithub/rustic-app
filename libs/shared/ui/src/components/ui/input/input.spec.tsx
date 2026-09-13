@@ -18,4 +18,16 @@ describe("Input", () => {
       true,
     );
   });
+
+  it("renders a leading icon", () => {
+    render(
+      <Input
+        aria-label="Search"
+        icon={<svg data-testid="input-icon" />}
+        placeholder="Search products"
+      />,
+    );
+
+    expect(screen.getByTestId("input-icon")).toBeVisible();
+  });
 });

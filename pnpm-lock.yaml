@@ -219,6 +219,9 @@ importers:
       '@vercel/related-projects':
         specifier: ^1.1.1
         version: 1.1.1
+      lucide-react:
+        specifier: ^1.45.0
+        version: 1.45.0(react@19.2.8)
       oxfmt:
         specifier: ^0.66.0
         version: 0.66.0
@@ -511,6 +514,10 @@ importers:
       radix-ui:
         specifier: ^1.6.7
         version: 1.6.7(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+    devDependencies:
+      '@testing-library/jest-dom':
+        specifier: ^7.0.1
+        version: 7.0.1(@testing-library/dom@10.4.0)(vitest@4.1.11)
 
 packages:
 
@@ -4591,6 +4598,16 @@ packages:
     resolution: {integrity: sha512-zIcONa+hVtVSSep9UT3jZ5rizo2BsxgyDYU7WFD5eICBE7no3881HGeb/QkGfsJs6JTkY1aQhT7rIPC7e+0nnA==}
     engines: {node: '>=14', npm: '>=6', yarn: '>=1'}
 
+  '@testing-library/jest-dom@7.0.1':
+    resolution: {integrity: sha512-oMDTC3oA+6CXSO2JZnvOI7CA6oVub6kij5ggk9ohwye5slmkwxYDXcPOVxgMw/RQlticjtO0C1RZkR97HgrWMw==}
+    engines: {node: '>=22', npm: '>=6', yarn: '>=1'}
+    peerDependencies:
+      '@testing-library/dom': '>=10 <11'
+      vitest: '>= 0.32'
+    peerDependenciesMeta:
+      vitest:
+        optional: true
+
   '@testing-library/react@16.3.3':
     resolution: {integrity: sha512-Uo193NgQbPMz6lrrhtRQQFcMC6Re/ELLFbbuVL30WDlZxlpZf9/lMHTAVxPRLw1q1iu9OJmR1c2BLiENRstdBg==}
     engines: {node: '>=18'}
@@ -7399,6 +7416,11 @@ packages:
   lru-cache@6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
+
+  lucide-react@1.45.0:
+    resolution: {integrity: sha512-yH1ubCAduho9UR7oJhRXIQXogksRILBiTuZC4/bQIGeB9JOkxMlSuEHyyZpo1Z3S0yWJO2KTSUZbjiNvVxeOUw==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   luxon@3.7.2:
     resolution: {integrity: sha512-vtEhXh/gNjI9Yg1u4jX/0YVPMvxzHuGgCm6tC5kZyb08yjGWGnqAjGJvcXbqQR2P3MyMEFnRbpcdFS6PBcLqew==}
@@ -13304,6 +13326,18 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
 
+  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.0)(vitest@4.1.11)':
+    dependencies:
+      '@adobe/css-tools': 4.5.0
+      '@testing-library/dom': 10.4.0
+      aria-query: 5.3.2
+      css.escape: 1.5.1
+      dom-accessibility-api: 0.6.3
+      picocolors: 1.1.1
+      redent: 3.0.0
+    optionalDependencies:
+      vitest: 4.1.11(@edge-runtime/vm@3.2.0)(@types/node@22.20.1)(@vitest/coverage-v8@4.1.11)(@vitest/ui@4.1.11)(jsdom@30.0.1)(msw@2.15.0(@types/node@22.20.1)(typescript@6.0.3))(vite@8.2.2(@types/node@22.20.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.23.13)(yaml@2.9.0))
+
   '@testing-library/react@16.3.3(@testing-library/dom@10.4.0)(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@babel/runtime': 7.29.7
@@ -16564,6 +16598,10 @@ snapshots:
   lru-cache@6.0.0:
     dependencies:
       yallist: 4.0.0
+
+  lucide-react@1.45.0(react@19.2.8):
+    dependencies:
+      react: 19.2.8
 
   luxon@3.7.2: {}
 

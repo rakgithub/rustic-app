@@ -1,0 +1,8 @@
+{
+  "name": "product-card",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/commerce/product-card",
+  "projectType": "library",
+  "tags": ["scope:commerce", "type:ui"],
+  "targets": {}
+}
