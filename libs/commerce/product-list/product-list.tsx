@@ -1,22 +1,19 @@
 import { useEffect, useState } from "react";
 import { apiClient } from "api-client";
-import { Button } from "ui";
+import { Search } from "lucide-react";
+import { Button, Input } from "ui";
+import { ProductCard, type ProductCardProduct } from "../product-card/product-card";
+import styles from "./product-list.module.css";
 
-type Product = {
-  id: string;
-  title: string;
-  description: string;
-  brand: string | null;
-  colour: string | null;
-  category: string | null;
-  priceMinor: number;
-  currency: string;
-  images: Array<{ blobUrl: string }>;
+type LoadingState = "loading" | "ready" | "empty" | "error";
+
+type ProductListProps = {
+  onAddProduct?: () => void;
 };
 
-export function ProductList() {
-  const [items, setItems] = useState<Product[]>([]);
-  const [state, setState] = useState<"loading" | "ready" | "empty" | "error">("loading");
+export function ProductList({ onAddProduct }: ProductListProps) {
+  const [items, setItems] = useState<ProductCardProduct[]>([]);
+  const [state, setState] = useState<LoadingState>("loading");
 
   async function load(showLoading = true) {
     if (showLoading) setState("loading");
@@ -28,7 +25,7 @@ export function ProductList() {
         setState("error");
         return;
       }
-      setItems(data.items as Product[]);
+      setItems(data.items);
       setState(data.items.length ? "ready" : "empty");
     } catch {
       setState("error");
@@ -41,17 +38,16 @@ export function ProductList() {
     }, 0);
     return () => window.clearTimeout(timer);
   }, []);
-
   if (state === "loading")
     return (
-      <section aria-live="polite">
+      <section className={styles.state} aria-live="polite">
         <h2>Products</h2>
         <p>Loading products…</p>
       </section>
     );
   if (state === "error")
     return (
-      <section role="alert">
+      <section className={styles.state} role="alert">
         <h2>Products</h2>
         <p>We couldn’t load products.</p>
         <Button onClick={() => void load()}>Retry</Button>
@@ -59,26 +55,28 @@ export function ProductList() {
     );
   if (state === "empty")
     return (
-      <section>
+      <section className={styles.state}>
         <h2>Products</h2>
         <p>No published products yet.</p>
       </section>
     );
 
   return (
-    <section aria-label="Product list">
-      <h2>Products</h2>
-      <div className="product-grid">
+    <section className={styles.screen} aria-label="Product list">
+      {/* <header className={styles.heading}>
+        {onAddProduct && <Button variant="default" onClick={onAddProduct}>Add a product</Button>}
+      </header> */}
+      <div className={styles.search}>
+        <Input
+          aria-label="Search products"
+          icon={<Search />}
+          name="productSearch"
+          placeholder="Search products"
+        />
+      </div>
+      <div className={styles.grid}>
         {items.map((product) => (
-          <article key={product.id} className="product-card">
-            {product.images[0] && <img src={product.images[0].blobUrl} alt="" loading="lazy" />}
-            <h3>{product.title}</h3>
-            {product.brand && <p>{product.brand}</p>}
-            <p>{product.description}</p>
-            <strong>
-              {(product.priceMinor / 100).toFixed(2)} {product.currency}
-            </strong>
-          </article>
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </section>

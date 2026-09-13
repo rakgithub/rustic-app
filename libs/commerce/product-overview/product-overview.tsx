@@ -1,4 +1,3 @@
-import { Button } from "ui";
 import { useNavigate } from "react-router-dom";
 import { ProductList } from "product-list";
 
@@ -7,8 +6,7 @@ function ProductOverview() {
 
   return (
     <section>
-      <Button onClick={() => navigate("add-product")}>Add Product</Button>
-      <ProductList />
+      <ProductList onAddProduct={() => navigate("/commerce/add-product")} />
     </section>
   );
 }

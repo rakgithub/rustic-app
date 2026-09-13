@@ -18,4 +18,17 @@ describe("Input", () => {
       true,
     );
   });
+
+  it("renders a leading icon", () => {
+    render(
+      <Input
+        aria-label="Search"
+        icon={<svg data-testid="search-icon" />}
+        placeholder="Search products"
+      />,
+    );
+
+    expect(screen.getByTestId("search-icon")).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Search" })).toHaveClass("pl-10");
+  });
 });

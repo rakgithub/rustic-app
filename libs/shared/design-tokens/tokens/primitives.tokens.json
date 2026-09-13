@@ -134,8 +134,12 @@
   },
   "duration": {
     "$type": "duration",
-    "fast": { "$value": { "value": 150, "unit": "ms" } },
-    "normal": { "$value": { "value": 200, "unit": "ms" } },
-    "slow": { "$value": { "value": 300, "unit": "ms" } }
+    "fast": { "$value": "150ms" },
+    "normal": { "$value": "200ms" },
+    "slow": { "$value": "300ms" }
+  },
+  "easing": {
+    "$type": "string",
+    "standard": { "$value": "ease" }
   }
 }
