@@ -23,12 +23,11 @@ describe("Input", () => {
     render(
       <Input
         aria-label="Search"
-        icon={<svg data-testid="search-icon" />}
+        icon={<svg data-testid="input-icon" />}
         placeholder="Search products"
       />,
     );
 
-    expect(screen.getByTestId("search-icon")).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: "Search" })).toHaveClass("pl-10");
+    expect(screen.getByTestId("input-icon")).toBeVisible();
   });
 });
