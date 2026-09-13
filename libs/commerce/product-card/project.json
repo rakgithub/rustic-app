@@ -3,6 +3,6 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/commerce/product-card",
   "projectType": "library",
-  "tags": ["scope:commerce", "type:ui"],
+  "tags": ["scope:commerce", "type:feature"],
   "targets": {}
 }
