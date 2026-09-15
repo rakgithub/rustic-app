@@ -413,6 +413,9 @@ importers:
 
   apps/commerce:
     dependencies:
+      lucide-react:
+        specifier: ^1.45.0
+        version: 1.45.0(react@19.2.8)
       react:
         specifier: ^19.0.0
         version: 19.2.8
