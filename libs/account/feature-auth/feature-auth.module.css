@@ -1,0 +1,209 @@
+.screen {
+  width: min(100%, calc(var(--space-16) * 6));
+  margin: var(--space-8) auto;
+  padding: var(--space-6);
+  border: var(--border-width-default) solid var(--color-border-default);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-raised);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.brandLogo {
+  display: block;
+  width: calc(var(--space-16) * 3);
+  height: var(--space-12);
+  margin-bottom: var(--space-5);
+}
+
+.eyebrow {
+  margin: var(--space-0) var(--space-0) var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+}
+
+.heading {
+  margin-bottom: var(--space-6);
+}
+
+.title {
+  margin: var(--space-0);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--font-line-height-tight);
+}
+
+.description {
+  margin: var(--space-2) var(--space-0) var(--space-0);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--font-line-height-normal);
+}
+
+.modeSwitch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-1);
+  margin-bottom: var(--space-6);
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+}
+
+.modeButton,
+.modeActive {
+  min-height: calc(var(--space-8) + var(--space-2));
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.modeActive {
+  background: var(--color-surface-raised);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.modeButton:focus-visible,
+.modeActive:focus-visible,
+.passwordToggle:focus-visible,
+.textButton:focus-visible {
+  outline: var(--border-width-default) solid var(--color-border-focus);
+  outline-offset: var(--border-width-default);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.field {
+  display: grid;
+  gap: var(--space-1);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.passwordInput {
+  position: relative;
+}
+
+.passwordInput input {
+  padding-right: calc(var(--space-12) + var(--space-5));
+}
+
+.passwordToggle {
+  position: absolute;
+  top: 50%;
+  right: var(--space-3);
+  transform: translateY(-50%);
+  padding: var(--space-1);
+  border: none;
+  background: transparent;
+  color: var(--color-text-link);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.formOptions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: calc(-1 * var(--space-1));
+}
+
+.remember {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+.remember input {
+  width: var(--space-4);
+  height: var(--space-4);
+  accent-color: var(--color-action-primary-default);
+}
+
+.textButton {
+  padding: var(--space-0);
+  border: none;
+  background: transparent;
+  color: var(--color-text-link);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+}
+
+.textButton:hover {
+  text-decoration: underline;
+}
+
+.submit {
+  width: 100%;
+  margin-top: var(--space-1);
+}
+
+.notice {
+  margin: calc(-1 * var(--space-1)) var(--space-0) var(--space-0);
+  color: var(--color-status-warning-foreground);
+  font-size: var(--font-size-xs);
+  line-height: var(--font-line-height-normal);
+}
+
+.successNotice {
+  margin: calc(-1 * var(--space-1)) var(--space-0) var(--space-0);
+  color: var(--color-status-success-foreground);
+  font-size: var(--font-size-xs);
+  line-height: var(--font-line-height-normal);
+}
+
+.accountScreen {
+  width: min(100%, calc(var(--space-16) * 8));
+}
+
+.sectionTitle {
+  margin: var(--space-0);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.passwordForm {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: var(--border-width-default) solid var(--color-border-subtle);
+}
+
+.switchPrompt {
+  margin: var(--space-6) var(--space-0) var(--space-0);
+  padding-top: var(--space-5);
+  border-top: var(--border-width-default) solid var(--color-border-subtle);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modeButton,
+  .modeActive,
+  .textButton {
+    scroll-behavior: auto;
+    transition: none;
+  }
+}

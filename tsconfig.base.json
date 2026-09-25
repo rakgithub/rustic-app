@@ -23,7 +23,7 @@
       "api-client": ["./libs/shared/api-client/src/index.ts"],
       "config": ["./libs/shared/config/src/index.ts"],
       "observability": ["./libs/shared/observability/src/index.ts"],
-      "feature-auth": ["./libs/account/feature-auth/src/index.ts"],
+      "feature-auth": ["./libs/account/feature-auth/feature-auth.tsx"],
       "data-access": ["./libs/account/data-access/src/index.ts"],
       "add-product": ["./libs/commerce/add-product/add-product.tsx"],
       "product-list": ["./libs/commerce/product-list/product-list.tsx"],

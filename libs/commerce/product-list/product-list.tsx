@@ -10,6 +10,7 @@ type LoadingState = "loading" | "ready" | "empty" | "error";
 export function ProductList() {
   const [items, setItems] = useState<ProductCardProduct[]>([]);
   const [state, setState] = useState<LoadingState>("loading");
+  const [query, setQuery] = useState("");
 
   async function load(showLoading = true) {
     if (showLoading) setState("loading");
@@ -34,6 +35,12 @@ export function ProductList() {
     }, 0);
     return () => window.clearTimeout(timer);
   }, []);
+  const normalizedQuery = query.trim().toLocaleLowerCase();
+  const filteredItems = items.filter((product) =>
+    [product.title, product.description, product.brand, product.category, product.colour]
+      .filter(Boolean)
+      .some((value) => value!.toLocaleLowerCase().includes(normalizedQuery)),
+  );
   if (state === "loading")
     return (
       <section className={styles.state} aria-live="polite">
@@ -64,14 +71,22 @@ export function ProductList() {
           aria-label="Search products"
           icon={<Search />}
           name="productSearch"
+          onChange={(event) => setQuery(event.currentTarget.value)}
           placeholder="Search products"
+          value={query}
         />
       </div>
-      <div className={styles.grid}>
-        {items.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      {filteredItems.length ? (
+        <div className={styles.grid}>
+          {filteredItems.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      ) : (
+        <p className={styles.emptySearch} role="status">
+          No products match “{query}”.
+        </p>
+      )}
     </section>
   );
 }

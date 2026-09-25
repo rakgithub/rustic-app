@@ -27,6 +27,9 @@ export default defineConfig({
   },
   preview: { port: PORT, strictPort: true, cors: true },
   build: { target: "chrome89" },
+  optimizeDeps: {
+    include: ["lucide-react"],
+  },
   resolve: {
     tsconfigPaths: true,
     alias: [

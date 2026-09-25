@@ -5,7 +5,6 @@ const configs = [
   "apps/commerce/tsconfig.json",
   "apps/shell/tsconfig.json",
   "libs/account/data-access/tsconfig.lib.json",
-  "libs/account/feature-auth/tsconfig.lib.json",
   "libs/shared/api-client/tsconfig.lib.json",
   "libs/shared/config/tsconfig.lib.json",
   "libs/shared/contracts/tsconfig.lib.json",

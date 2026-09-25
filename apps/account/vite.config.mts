@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import { fileURLToPath, URL } from "node:url";
 import react from "@vitejs/plugin-react";
 import { federation } from "@module-federation/vite";
 
@@ -25,7 +26,21 @@ export default defineConfig({
   },
   preview: { port: PORT, strictPort: true, cors: true },
   build: { target: "chrome89" },
-  resolve: { tsconfigPaths: true },
+  resolve: {
+    tsconfigPaths: true,
+    alias: [
+      {
+        find: /^ui$/,
+        replacement: fileURLToPath(new URL("../../libs/shared/ui/src/index.ts", import.meta.url)),
+      },
+      {
+        find: /^data-access$/,
+        replacement: fileURLToPath(
+          new URL("../../libs/account/data-access/src/index.ts", import.meta.url),
+        ),
+      },
+    ],
+  },
   plugins: [
     federation({
       name: "account",
